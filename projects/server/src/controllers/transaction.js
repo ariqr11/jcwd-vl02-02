@@ -5,7 +5,6 @@ const { dbConf, dbQuery } = require('../config/db');
 module.exports = {
   getTransaction: async (req, res) => {
     try {
-      console.log('ini dari token', req.dataToken)
       if (req.dataToken.role.toLowerCase() === 'user') {
         // console.log(req.query)
 

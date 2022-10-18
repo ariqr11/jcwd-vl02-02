@@ -147,34 +147,6 @@ module.exports = {
                 res.status(200).send(results)
             }
     },
-    stockHistory: (req, res, next) => {
-        let idproduct = req.params.id;
-        dbConf.query(`Select *,p.product_name from stock s join product p on s.product_id = p.idproduct where s.product_id = ${idproduct} and s.isDefault ='true';`,
-            (err, results) => {
-                if (err) {
-                    return res.status(500).send(`Middlewear stockHistory failed, error : ${err}`)
-                }
-                if (results[0].stock_unit > req.body.data.stock_unit) {
-                    dbConf.query(`INSERT INTO history_stock (product_name, user_id,unit,quantity, type,information) VALUES
-                    (${dbConf.escape(results[0].product_name)},${dbConf.escape(req.body.data.iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(results[0].stock_unit - req.body.data.stock_unit)},'Manual Update','Pengurangan');`,
-                        (error, results) => {
-                            if (error) {
-                                return res.status(500).send(`Middlewear stockHistory failed, error : ${error}`)
-                            }
-                            next()
-                        })
-                } else if (results[0].stock_unit < req.body.data.stock_unit) {
-                    dbConf.query(`INSERT INTO history_stock (product_name, user_id,unit,quantity, type,information) VALUES
-                (${dbConf.escape(results[0].product_name)},${dbConf.escape(req.body.data.iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(req.body.data.stock_unit - results[0].stock_unit)},'Manual Update','Penambahan');`,
-                        (error, results) => {
-                            if (error) {
-                                return res.status(500).send(`Middlewear stockHistory failed, error : ${error}`)
-                            }
-                            next()
-                        })
-                }
-            })
-    },
     deleteProduct: (req, res) => {
         let idproduct = req.params.id;
 
@@ -199,9 +171,14 @@ module.exports = {
             })
     },
     editProduct: (req, res) => {
-        let idproduct = req.params.id;
-        let image = `/imgProductPict/${req.files[0].filename}`;
-        let { price, category_id, netto_stock, netto_unit, default_unit, description, dosis, aturan_pakai, stock_unit, unit } = JSON.parse(req.body.data);
+        // let idproduct = req.params.id;
+        // let image = `/imgProductPict/${req.files[0].filename}`;
+        // let { iduser, price, category_id, netto_stock, netto_unit, default_unit, description, dosis, aturan_pakai, stock_unit, unit } = JSON.parse(req.body.data);
+        // let { price, category_id, netto_stock, netto_unit, default_unit, description, dosis, aturan_pakai, stock_unit, unit } = JSON.parse(req.body.data);
+
+        let { image, iduser, idproduct, price, category_id, netto_stock, netto_unit, default_unit, description, dosis, aturan_pakai, stock_unit, unit } = resultEditproduct;
+
+        console.log('Ini stock unit di editproduct', stock_unit)
 
         dbConf.query(`UPDATE product p, stock s
         SET p.price=${dbConf.escape(price)},
@@ -217,7 +194,7 @@ module.exports = {
             s.unit=${dbConf.escape(unit)}
         WHERE
             p.idproduct = ${dbConf.escape(idproduct)}
-            AND s.product_id = ${dbConf.escape(idproduct)} AND s.isDefault = 'true' `,
+            AND s.product_id = ${dbConf.escape(idproduct)}`,
             (error, results) => {
                 if (error) {
                     res.status(500).send(`Middleware query edit product gagal :`, error);
@@ -439,6 +416,99 @@ module.exports = {
             console.log(error);
             res.status(500).send(error);
         }
+    },
+    stockHistory: (req, res, next) => {
+        let image = `/imgProductPict/${req.files[0].filename}`;
+        let { iduser, price, category_id, netto_stock, netto_unit, default_unit, description, dosis, aturan_pakai, stock_unit, unit } = JSON.parse(req.body.data);
+        let idproduct = req.params.id;
+
+        dbConf.query(`Select *,p.product_name from stock s join product p on s.product_id = p.idproduct where s.product_id = ${dbConf.escape(idproduct)} and s.isDefault ='true'`,
+
+            // dbConf.query(`Select *,p.product_name from stock s join product p on s.product_id = p.idproduct where s.product_id = ${idproduct} and s.isDefault ='true'`,
+            (err, results) => {
+                if (err) {
+                    return res.status(500).send(`Middlewear stockHistory failed, error : ${err}`)
+                }
+
+                if (results[0].stock_unit > stock_unit) {
+                    // dbConf.query(`INSERT INTO history_stock (product_name, user_id, unit, quantity, type, information) VALUES
+                    dbConf.query(`INSERT INTO history_stock (product_name,product_id, user_id, unit, quantity, type, information) VALUES
+
+                    (${dbConf.escape(results[0].product_name)},${dbConf.escape(idproduct)},${dbConf.escape(iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(results[0].stock_unit - stock_unit)},'Manual Update','Pengurangan')`,
+
+                        // (${dbConf.escape(results[0].product_name)},${dbConf.escape(req.body.data.iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(results[0].stock_unit - req.body.data.stock_unit)},'Manual Update','Pengurangan')`,
+                        (error, results) => {
+                            if (error) {
+                                return res.status(500).send(`Middlewear stockHistory failed, error : ${error}`)
+                            }
+
+                            resultEditproduct = {
+                                image,
+                                iduser,
+                                idproduct,
+                                price,
+                                category_id,
+                                netto_stock,
+                                netto_unit,
+                                default_unit,
+                                description,
+                                dosis,
+                                aturan_pakai,
+                                stock_unit,
+                                unit
+                            };
+
+                            next()
+                        })
+                } else if (results[0].stock_unit < stock_unit) {
+                    dbConf.query(`INSERT INTO history_stock (product_name,product_id, user_id, unit, quantity, type, information) VALUES
+                (${dbConf.escape(results[0].product_name)},${dbConf.escape(idproduct)},${dbConf.escape(iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(stock_unit - results[0].stock_unit)},'Manual Update','Penambahan');`,
+
+                        // (${dbConf.escape(results[0].product_name)},${dbConf.escape(req.body.data.iduser)},${dbConf.escape(results[0].unit)},${dbConf.escape(req.body.data.stock_unit - results[0].stock_unit)},'Manual Update','Penambahan');`,
+                        (error, results) => {
+                            if (error) {
+                                return res.status(500).send(`Middlewear stockHistory failed, error : ${error}`)
+                            }
+
+                            resultEditproduct = {
+                                image,
+                                iduser,
+                                idproduct,
+                                price,
+                                category_id,
+                                netto_stock,
+                                netto_unit,
+                                default_unit,
+                                description,
+                                dosis,
+                                aturan_pakai,
+                                stock_unit,
+                                unit
+                            };
+
+                            next()
+                        })
+                } else {
+
+                    resultEditproduct = {
+                        image,
+                        iduser,
+                        idproduct,
+                        price,
+                        category_id,
+                        netto_stock,
+                        netto_unit,
+                        default_unit,
+                        description,
+                        dosis,
+                        aturan_pakai,
+                        stock_unit,
+                        unit
+                    };
+
+                    next()
+                }
+            })
     },
     unitConv: async (req, res) => {
         try {
