@@ -101,7 +101,6 @@ const TransactionPages = () => {
       .then((res) => {
         console.log(res.data)
         setProduct(res.data)
-        setTimeout(() => setLoading(false), 1000)
       })
       .catch((error) => {
         console.log('Print product error', error);
@@ -119,7 +118,7 @@ const TransactionPages = () => {
                   : `${val.status_id == 8 ? 'In Delivery'
                     : 'Order Completed'}`}`}`} </p>
             <p className='text-xl font-semibold mx-5 col-span-2'>{val.invoice_number}</p>
-            <p className='text-xl font-thin flex items-center col-span-2'><BsClock className='mr-2 opacity-50' /> {val.date_order} WIB</p>
+            <p className='text-xl font-thin flex items-center col-span-2'><BsClock className='mr-2 opacity-50' /> {val.dateOrder} WIB</p>
           </div>
           <div className='ml-5 grid grid-cols-5 gap-0'>
             <div className='flex col-span-2'>
@@ -747,7 +746,7 @@ const TransactionPages = () => {
               </div>
               <div className='flex justify-between my-3 mr-3'>
                 <p className='text-large font-bold'>Transaction Date</p>
-                <p className='text-large font-thin flex items-center'> {modalDetail.date_order} WIB</p>
+                <p className='text-large font-thin flex items-center'> {modalDetail.dateOrder} WIB</p>
               </div>
             </div>
             <div className='overflow-hide-modal scroll'>
@@ -888,7 +887,7 @@ const TransactionPages = () => {
                   <div className='ml-5 my-3'>
                     <p className='text-xl font-bold my-1'>{modalAccept.user_name}</p>
                     <p className='text-xl font-semibold my-1'>{modalAccept.invoice_number}</p>
-                    <p className='text-xl font-thin flex items-center my-1'>{modalAccept.date_order} WIB</p>
+                    <p className='text-xl font-thin flex items-center my-1'>{modalAccept.dateOrder} WIB</p>
                   </div>
                 </div>
                 <div className='overflow-hide-accept scroll' style={see ? { height: 400 } : {}}>
@@ -1103,7 +1102,7 @@ const TransactionPages = () => {
                     </div>
                     <div className='flex justify-between my-3 mr-3'>
                       <p className='text-large font-bold'>Request Date</p>
-                      <p className='text-large font-thin flex items-center'> {modalRecipe.date_order} WIB</p>
+                      <p className='text-large font-thin flex items-center'> {modalRecipe.dateOrder} WIB</p>
                     </div>
                   </div>
                 </div>

@@ -82,7 +82,7 @@ module.exports = {
             filter.push(`${key} = ${dbConf.escape(req.query[key])}`)
           }
         }
-        let sqlGet = `Select *,date_format(date_order,'%e %b %Y, %H:%i') as date_order from transaction 
+        let sqlGet = `Select *,date_format(date_order,'%e %b %Y, %H:%i') as dateOrder from transaction 
           ${filter.length == 0 ? '' : `where ${filter.join(' AND ')}`} order by date_order desc ;`;
 
         let transaction = await dbQuery(sqlGet);

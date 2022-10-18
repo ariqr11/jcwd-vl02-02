@@ -516,13 +516,13 @@ module.exports = {
             if (req.body.status == 'already') {
                 await dbQuery(`UPDATE stock SET stock_unit=${dbConf.escape(req.body.main)} WHERE product_id=${dbConf.escape(req.body.idproduct)} AND isDefault='true';`);
                 await dbQuery(`UPDATE stock SET stock_unit=${dbConf.escape(req.body.conv)} WHERE product_id=${dbConf.escape(req.body.idproduct)} AND isDefault='false';`);
-                await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,qty, type,information) VALUES
+                await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,quantity, type,information) VALUES
                 (${dbConf.escape(req.body.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(req.body.mainUnit)},${dbConf.escape(req.body.change_main)},'Unit Conversion','Pengurangan'),
                 (${dbConf.escape(req.body.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(req.body.convUnit)},${dbConf.escape(req.body.change_conv)},'Unit Conversion','Penambahan');`)
             } else {
                 await dbQuery(`UPDATE stock SET stock_unit=${dbConf.escape(req.body.main)} WHERE product_id=${dbConf.escape(req.body.idproduct)} AND isDefault='true';`);
                 await dbQuery(`insert into stock (stock_unit,unit,isDefault,product_id) values (${dbConf.escape(req.body.conv)},${dbConf.escape(req.body.convUnit)},'false',${dbConf.escape(req.body.idproduct)});`);
-                await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,qty, type,information) VALUES
+                await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,quantity, type,information) VALUES
                 (${dbConf.escape(req.body.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(req.body.mainUnit)},${dbConf.escape(req.body.change_main)},'Unit Conversion','Pengurangan'),
                 (${dbConf.escape(req.body.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(req.body.convUnit)},${dbConf.escape(req.body.conv)},'Unit Conversion','Penambahan');`)
             }

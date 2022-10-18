@@ -7,6 +7,7 @@ import { AiFillEdit } from "react-icons/ai";
 import ModalAddMainUnit from "./ModalAddMainUnit";
 import ModalAddNettoUnit from "./ModalAddNettoUnit";
 import ModalSettingCategory from "./ModalSettingCategory";
+import { useSelector } from 'react-redux'
 
 const ModalEdit = ({ setModalEditOn, dataproduct, category, setLoading }) => {
     let { iduser } = useSelector((state) => {
