@@ -364,6 +364,7 @@ module.exports = {
     },
     deletecart: async (req, res) => {
         try {
+            console.log(req.params)
             await dbQuery(`DELETE FROM cart WHERE idcart=${dbConf.escape(req.params.idcart)};`);
 
             res.status(200).send({

@@ -6,19 +6,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import LoadingComponent from './Loading';
 import { useNavigate } from "react-router";
 import placeholder from '../assets/placeholder.png';
+import { useSelector } from 'react-redux';
 
-const UploadPaymentProof = ({ showModal, id, loading }) => {
-
-    // bentuk modal, harus dipanggil di order list user (sprint 3)
+const UploadPaymentProof = ({ id, showProofModal, loading }) => {
 
     const [showPic, setShowPic] = React.useState('');
     const [paymentProofPic, setPaymentProofPic] = React.useState('');
     const [loadPic, setLoadPic] = React.useState(false);
 
+    const { username } = useSelector((state) => {
+        return {
+            username: state.userReducer.username
+        }
+    });
 
     const fileRef = React.useRef();
     const navigate = useNavigate();
-    
+
     const onPaymentProof = async () => {
         try {
             console.log(id)
@@ -43,9 +47,9 @@ const UploadPaymentProof = ({ showModal, id, loading }) => {
                 }));
 
                 formProof.append('paymentproof_pic', paymentProofPic);
-                
+
                 loading(true);
-                showModal('');
+                showProofModal(false);
                 let res = await axios.patch(API_URL + '/api/transaction/addproof', formProof, {
                     headers: {
                         'Authorization': `Bearer ${userToken}`
@@ -54,7 +58,7 @@ const UploadPaymentProof = ({ showModal, id, loading }) => {
                 if (res.data.success) {
                     setTimeout(() => {
                         loading(false);
-                        navigate('/', {replace: true}); //sementara navigate ke landing, nanti diganti ke order list
+                        navigate(`/transaction/${username}`, { replace: true });
                     }, 3000)
                 }
             }
@@ -68,11 +72,11 @@ const UploadPaymentProof = ({ showModal, id, loading }) => {
         <div>
             <div tabIndex={-1} className="overflow-y-auto overflow-x-hidden backdrop-blur-sm fixed right-0 left-0 top-0 flex justify-center items-center z-50 md:inset-0 h-modal md:h-full">
                 <div className="relative p-4 w-1/3 h-full md:h-auto">
-                    <div className="relative border-2 bg-white rounded-lg shadow border-main-500 px-6">
-                        <div className="flex justify-end items-center my-3">
-                            <button type='button' className="font-extrabold pt-1 text-lg text-main-500" onClick={() => showModal('')}>X</button>
+                    <div className="relative border-2 bg-white rounded-lg shadow border-main-500 p-6">
+                        <div className="flex justify-center items-center my-3">
+                            <p className="text-center font-bold text-2xl text-main-500">UPLOAD PAYMENT PROOF</p>
+                            <button type='button' className="absolute right-10 font-extrabold pt-1 text-lg text-main-500" onClick={() => showProofModal()}>X</button>
                         </div>
-                        <p className="text-center font-bold text-2xl text-main-500">UPLOAD PAYMENT PROOF</p>
                         <div className='flex items-center my-4'>
                             <button className='border rounded-lg bg-main-500 text-white font-bold py-2 px-5 hover:bg-main-600 focus:ring-2 focus:ring-main-500'
                                 onClick={() => fileRef.current.click()}>

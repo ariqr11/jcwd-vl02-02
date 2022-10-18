@@ -9,6 +9,7 @@ import Currency from '../../components/CurrencyComp';
 import { useDispatch } from 'react-redux';
 import { updateCart } from '../../action/useraction';
 import LoadingComponent from '../../components/Loading';
+import nodata from '../../assets/nodata.png';
 
 const UserCart = (props) => {
 
@@ -77,7 +78,7 @@ const UserCart = (props) => {
                         />
                     </div>
                     <div>
-                        <img src={val.picture} style={{ maxWidth: '8rem' }} alt={val.product_name} />
+                        <img src={val.picture} style={{ maxWidth: '8rem' }} alt={val.product_name}/>
                     </div>
                     <div className='w-full flex flex-col'>
                         <div className='flex justify-between h-2/3'>
@@ -302,9 +303,18 @@ const UserCart = (props) => {
                                 />
                                 <span className='font-medium p-2'>Select All</span>
                             </div>
-                            <div>
-                                {printCart()}
-                            </div>
+                            {
+                                cartData.length > 0 ?
+                                    <div>
+                                        {printCart()}
+                                    </div>
+                                    :
+                                    <div className="flex flex-col justify-center items-center text-center my-5">
+                                        <p className="font-bold text-2xl drop-shadow-lg text-main-500">Oops you cart is empty!</p>
+                                        <img src={nodata} className="w-2/3" alt='placeholder'/>
+                                    </div>
+
+                            }
                         </div>
                     </div>
                     <div className='basis-5/12'>
@@ -329,7 +339,7 @@ const UserCart = (props) => {
                 </div>
             </div>
             <ToastContainer />
-            <LoadingComponent loading={loading}/>
+            <LoadingComponent loading={loading} />
         </div>
     )
 };

@@ -48,10 +48,17 @@ const AddressComponent = (props) => {
                         <p className='transform: capitalize'>{val.province}, {val.postal_code}</p>
                         <div className='w-1/3 flex justify-between items-center'>
                             <button type='button' className='text-main-500 hover:underline focus:underline' onClick={() => { setShowEditAddressModal('show'); setSelectedEdit(val) }}>Edit Address</button>
-                            <p className='font-bold text-main-500'>|</p>
-                            <button type='button' className='text-red-500 hover:underline focus:underline'
-                                onClick={() => setModalDelete(val.idaddress)}
-                            >Delete Address</button>
+                            {
+                                val.status_name !== 'Primary' ?
+                                    <>
+                                        <p className='font-bold text-main-500'>|</p>
+                                        <button type='button' className='text-red-500 hover:underline focus:underline'
+                                            onClick={() => setModalDelete(val.idaddress)}
+                                        >Delete Address</button>
+                                    </>
+                                    :
+                                    ""
+                            }
                             {
                                 modalDelete === val.idaddress ?
                                     <div tabIndex={-1} className="overflow-y-auto overflow-x-hidden backdrop-blur-sm fixed right-0 left-0 top-0 flex justify-center items-center z-50 md:inset-0 h-modal md:h-full">
@@ -136,7 +143,7 @@ const AddressComponent = (props) => {
             <div className='container mx-auto'>
                 <p className='flex items-center justify-center text-main-500 font-bold text-2xl my-3'>ADDRESS</p>
                 <div className='flex justify-center'>
-                    <div className='border-2 w-2/3 rounded-lg p-4'>
+                    <div className='border-2 w-2/3 rounded-lg p-4 shadow-lg'>
                         <div className='flex justify-end'>
                             <button type='button' onClick={() => setShowNewAddressModal('show')}
                                 className='border p-3 rounded-lg bg-main-500 text-white font-bold hover:bg-main-600 focus:ring-2 focus:ring-main-5'>Add New Address</button>
@@ -145,14 +152,14 @@ const AddressComponent = (props) => {
                         {/* MODAL ALAMAT BARU */}
                         {
                             showNewAddressModal === 'show' ?
-                                <NewAddressComponent showModal={setShowNewAddressModal} setAddress={getAddress()}/>
+                                <NewAddressComponent showModal={setShowNewAddressModal} setAddress={getAddress()} />
                                 :
                                 ""
                         }
                         {/* MODAL EDIT ALAMAT */}
                         {
                             showEditAddressModal === 'show' ?
-                                <EditAddressComponent selected={selectedEdit} showModal={setShowEditAddressModal} setAddress={getAddress()}/>
+                                <EditAddressComponent selected={selectedEdit} showModal={setShowEditAddressModal} setAddress={getAddress()} />
                                 :
                                 ""
                         }

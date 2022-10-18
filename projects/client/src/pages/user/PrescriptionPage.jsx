@@ -53,7 +53,7 @@ const Prescription = (props) => {
                     'Authorization': `Bearer ${userToken}`
                 }
             });
-            //console.log('user address', getAddress.data);
+            console.log('user address', getAddress.data);
             setAllAddress(getAddress.data);
 
             let getSelectedAddress = getAddress.data.find((val, idx) => val.selected === "true");
@@ -218,7 +218,7 @@ const Prescription = (props) => {
                 address: setAddress,
                 weight,
                 delivery: parseInt(selectedDelivery.split(',')[0]),
-                courier,
+                courier: courier + '/' + selectedDelivery.split(',')[1],
             }));
             formSubmit.append('prescription_pic', prescriptionPic);
 

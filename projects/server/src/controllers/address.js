@@ -3,11 +3,12 @@ const { dbConf, dbQuery } = require('../config/db');
 module.exports = {
     getAddress: async (req, res) => {
         try {
-            //console.log(req.dataToken);
+            // console.log(req.dataToken);
             let getSql = await dbQuery(`SELECT a.*, s.*, u.fullname, u.phone_number FROM address a 
-          JOIN status s ON a.status_id = s.idstatus 
-          JOIN user u ON u.iduser = a.user_id 
-          WHERE a.user_id = ${req.dataToken.iduser};`)
+            JOIN status s ON a.status_id = s.idstatus 
+            JOIN user u ON u.iduser = a.user_id 
+            WHERE a.user_id = ${req.dataToken.iduser};`)
+            console.log(getSql)
 
             res.status(200).send(getSql);
         } catch (error) {
@@ -55,8 +56,11 @@ module.exports = {
 
                 await dbQuery(`UPDATE address SET ${temp.join(' , ')} WHERE idaddress = ${dbConf.escape(req.body.idaddress)} AND user_id = ${req.dataToken.iduser};`);
             } else if (req.body.setPrimary) {
+                await dbQuery(`UPDATE address SET selected='false' WHERE user_id = ${dbConf.escape(req.dataToken.iduser)};`);
                 await dbQuery(`UPDATE address SET status_id=11 WHERE user_id = ${dbConf.escape(req.dataToken.iduser)};`);
                 await dbQuery(`UPDATE address SET status_id=10 WHERE idaddress = ${dbConf.escape(req.body.setPrimary)};`);
+                await dbQuery(`UPDATE address SET selected='true' WHERE idaddress = ${dbConf.escape(req.body.setPrimary)};`);
+                
             }
 
             res.status(200).send({

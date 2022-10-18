@@ -84,7 +84,6 @@ module.exports = {
         }
         let sqlGet = `Select *,date_format(date_order,'%e %b %Y, %H:%i') as dateOrder from transaction 
           ${filter.length == 0 ? '' : `where ${filter.join(' AND ')}`} order by date_order desc ;`;
-
         let transaction = await dbQuery(sqlGet);
         if (transaction) {
           for (i = 0; i < transaction.length; i++) {
@@ -105,7 +104,7 @@ module.exports = {
       // console.log(JSON.parse(req.body.datatransaction));
       // console.log(req.files[0].filename);
       // console.log(req.files);
-      console.log(req.body);
+      // console.log(req.body.detail);
 
       if (req.files) {
         // status_id = 3 karena harus menunggu konfirmasi admin
@@ -122,21 +121,21 @@ module.exports = {
         let data = req.body.formSubmit;
 
         await dbQuery(`INSERT INTO transaction (user_id, user_name,user_phone_number, invoice_number, status_id, user_address, total_price, order_weight, delivery_price, shipping_courier)
-        VALUES (${dbConf.escape(req.dataToken.iduser)}, ${dbConf.escape(req.dataToken.fullname)},${dbConf.escape(req.dataToken.phone_number)}, ${dbConf.escape(data.invoice)}, 3, ${dbConf.escape(data.address)}, ${dbConf.escape(data.total)}, ${dbConf.escape(data.weight)},
+        VALUES (${dbConf.escape(req.dataToken.iduser)}, ${dbConf.escape(req.dataToken.fullname)},${dbConf.escape(req.dataToken.phone_number)}, ${dbConf.escape(data.invoice)}, 4, ${dbConf.escape(data.address)}, ${dbConf.escape(data.total)}, ${dbConf.escape(data.weight)},
         ${dbConf.escape(data.delivery)}, ${dbConf.escape(data.courier)});`)
 
         let get = await dbQuery(`SELECT idtransaction FROM transaction WHERE invoice_number = ${dbConf.escape(data.invoice)};`)
 
-        console.log(get[0].idtransaction);
+        // console.log(get[0].idtransaction);
 
         if (get[0].idtransaction > 0) {
           let temp = [];
           req.body.detail.forEach((val, idx) => {
-            temp.push(`(${dbConf.escape(val.product_name)}, ${dbConf.escape(val.product_qty)}, ${dbConf.escape(val.product_unit)}, ${dbConf.escape(val.product_price)}, ${dbConf.escape(val.product_image)}, ${dbConf.escape(get[0].idtransaction)})`);
+            temp.push(`(${dbConf.escape(val.product_name)}, ${dbConf.escape(val.product_qty)}, ${dbConf.escape(val.product_price)}, ${dbConf.escape(val.product_image)}, ${dbConf.escape(val.product_unit)}, ${dbConf.escape(get[0].idtransaction)}, ${dbConf.escape(val.product_id)})`);
           });
-          console.log(temp.join(', '));
+          // console.log(temp.join(', '));
 
-          await dbQuery(`INSERT INTO transaction_detail (product_name, product_qty,product_unit, product_price, product_image, transaction_id) VALUES
+          await dbQuery(`INSERT INTO transaction_detail (product_name, product_qty, product_price, product_image, product_unit, transaction_id, product_id) VALUES
           ${temp.join(', ')};`)
 
           let history = [];

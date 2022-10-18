@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import confirm from '../../assets/confirm.png';
 import LoadingComponent from "../../components/Loading";
@@ -8,6 +9,12 @@ const UploadSuccess = (props) => {
 
     const [loading, setLoading] = React.useState(false);
     const navigate = useNavigate();
+
+    const { username } = useSelector((state) => {
+        return {
+            username : state.userReducer.username
+        }
+    })
 
     return (
         <div className='container mx-auto py-5 h-screen'>
@@ -24,7 +31,14 @@ const UploadSuccess = (props) => {
                             navigate('/', {replace: true})
                         }, 2000)
                     }}>Back to Homepage</button>
-                    <button className='border-2 rounded-lg py-3 px-14 bg-main-500 text-white font-bold border-main-500 hover:bg-main-600 focus:ring-2 focus:ring-main-500'>Go To Order Progress</button>
+                    <button className='border-2 rounded-lg py-3 px-14 bg-main-500 text-white font-bold border-main-500 hover:bg-main-600 focus:ring-2 focus:ring-main-500'
+                    onClick={() => {
+                        setLoading(true);
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigate(`/transaction/${username}`, {replace: true})
+                        }, 2000)
+                    }}>Go To Order Progress</button>
                 </div>
             </div>
             <LoadingComponent loading={loading} />
