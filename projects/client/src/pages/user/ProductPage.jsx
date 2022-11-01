@@ -22,7 +22,8 @@ const ProductPage = (props) => {
     const { state, search } = useLocation();    //perlu idcategory dari daniel
     let id = search.split('=');
     const [filterName, setFilterName] = React.useState(id[id.length - 1].length > 1 ? id[id.length - 1] : '');
-    const [idPage, setIdPage] = React.useState(search.includes('&') ? id[1].charAt(0) : undefined);
+    // const [idPage, setIdPage] = React.useState(search.includes('&') ? id[1].charAt(0) : undefined);
+    const [idPage, setIdPage] = React.useState(search.includes('&') || id[id.length - 1].length == 1 ? id[1].charAt(0) : undefined);
     const [defaultSort, setDefaultSort] = React.useState('Paling Sesuai');
     const [filterNameOn, setFilterNameOn] = React.useState(filterName ? true : false);
 
@@ -398,7 +399,7 @@ const ProductPage = (props) => {
                 </div>
 
                 <div className="grid grid-flow-col gap-4">
-                    <div className="hidden md:row-span-3 md:inline">
+                    <div className="hidden md:row-span-3 md:inline" style={{width:"256px"}}>
                         <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden mt-5 h-fit w-64">
                             <div className="px-4 pt-4 pb-2">
                                 <div className="font-bold text-md mb-3 text-txt-500">CARI OBAT</div>
@@ -497,7 +498,7 @@ const ProductPage = (props) => {
                                 </div>
                             </div>
                     {/* Desktop sort */}
-                    <div className="hidden md:flex justify-between items-center">
+                    <div className="hidden md:flex justify-between items-center" style={{width:"988px"}}>
                         <p className="text-2xl font-bold mt-5 mb-3 text-txt-500">OBAT</p>
                         <div className="flex items-center">
                             <p className="text-sm text-cyan-900 mr-2">Urutkan: </p>
@@ -526,7 +527,7 @@ const ProductPage = (props) => {
                     {
                         sort || filterNameOn ?
                             <>
-                                <div className="flex my-7">
+                                <div className="flex my-4">
                                     <button className="text-btn-500 font-bold text-sm mx-2" onClick={() => { onResetAllFilter(); setFilterNameOn(false) }}>Reset Semua Filter</button>
                                     {/* <button className="flex text-xs items-center text-gray-500 border rounded-lg pl-2 ml-3">
                                     {defaultFilterCategory}
@@ -562,7 +563,7 @@ const ProductPage = (props) => {
                     }
 
                     <hr className="hidden md:flex my-2 h-px bg-gray-200 border-0 dark:bg-gray-700" />
-                            <hr className="hidden md:flex my-2 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                            {/* <hr className="hidden md:flex my-2 h-px bg-gray-200 border-0 dark:bg-gray-700" /> */}
 
                             {
                                 data.length > 0 ?

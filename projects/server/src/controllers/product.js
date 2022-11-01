@@ -409,7 +409,8 @@ module.exports = {
             let getSql = await dbQuery(`SELECT * FROM cart c 
             JOIN product p ON c.product_id = p.idproduct 
             JOIN stock s ON s.product_id = p.idproduct
-            WHERE c.user_id = ${dbConf.escape(req.dataToken.iduser)}
+            WHERE c.user_id = ${dbConf.escape(req.dataToken.iduser)} 
+            and s.isDefault='true' 
             ORDER BY c.idcart DESC;`);
 
             res.status(200).send(getSql);
