@@ -205,13 +205,13 @@ module.exports = {
           ${temp.join(', ')};`)
 
           req.body.detail.forEach(async (val, idx) => {
-            console.log(`UPDATE stock SET stock_unit = stock_unit - ${dbConf.escape(val.product_qty)} WHERE product_id = ${dbConf.escape(val.product_id)};`)
-            await dbQuery(`UPDATE stock SET stock_unit = stock_unit - ${dbConf.escape(val.product_qty)} WHERE product_id = ${dbConf.escape(val.product_id)};`)
+            console.log(`UPDATE stock SET stock_unit = stock_unit - ${dbConf.escape(val.product_qty)} WHERE product_id = ${dbConf.escape(val.product_id)} AND isDefault = 'true';`)
+            await dbQuery(`UPDATE stock SET stock_unit = stock_unit - ${dbConf.escape(val.product_qty)} WHERE product_id = ${dbConf.escape(val.product_id)} AND isDefault = 'true';`)
           });
 
           let history = [];
           req.body.detail.forEach((val, idx) => {
-            history.push(`(${dbConf.escape(val.product_name)},${dbConf.escape(req.dataToken.iduser)},${dbConf.escape(val.product_unit)},${dbConf.escape(val.product_qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Penjualan','Pengurangan')`)
+            history.push(`(${dbConf.escape(val.product_name)},${dbConf.escape(req.dataToken.iduser)},${dbConf.escape(val.product_unit)},${dbConf.escape(val.product_qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Sales','Decrement')`)
           })
 
           await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,quantity,date, type,information) VALUES
@@ -254,7 +254,7 @@ module.exports = {
             }
             let history = [];
             req.body.recipe.forEach((val, idx) => {
-              history.push(`(${dbConf.escape(val.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(val.unit)},${dbConf.escape(val.qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Penjualan dari Resep','Pengurangan')`)
+              history.push(`(${dbConf.escape(val.name)},${dbConf.escape(req.body.iduser)},${dbConf.escape(val.unit)},${dbConf.escape(val.qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Sales from Recipe','Decrement')`)
             })
 
             await dbQuery(`INSERT INTO history_stock (product_name, user_id,unit,quantity,date, type,information) VALUES
@@ -282,7 +282,7 @@ module.exports = {
 
             let history = [];
             updateStock.forEach((val, idx) => {
-              history.push(`(${dbConf.escape(val.product_name)},${dbConf.escape(update.iduser)},${dbConf.escape(val.product_unit)},${dbConf.escape(val.product_qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Pembatalan','Penjumlahan')`)
+              history.push(`(${dbConf.escape(val.product_name)},${dbConf.escape(update.iduser)},${dbConf.escape(val.product_unit)},${dbConf.escape(val.product_qty)},'${new Date().toLocaleDateString('en-CA')} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}','Canceled','Increment')`)
             })
 
             // console.log('history', history)

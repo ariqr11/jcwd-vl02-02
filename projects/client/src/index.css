@@ -22,7 +22,7 @@ code {
 .overflow-hide {
   overflow: auto;
   overflow-x: hidden;
-  height: 512px;
+  height: 400px;
 }
 
 .overflow-hide-modal {

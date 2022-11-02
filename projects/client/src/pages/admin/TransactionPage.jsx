@@ -532,7 +532,7 @@ const TransactionPages = () => {
       <Helmet>
         <title>Admin transaction</title>
       </Helmet>
-      <div className={`${loading || modalDetail || modalPayment ? 'overflow-hide scroll ' : ""}`}  >
+      <div className={`${loading || modalDetail || modalPayment || modalAccept || modalCancel || modalConv || modalNote || modalRecipe ? 'overflow-hide scroll ' : ""}`}  >
         <div className='flex'>
           <AdminComponent page={window.location.pathname} />
           <div className='w-screen' style={{ background: "linear-gradient(155.7deg, #D6F5F3 -46%, #F7FCFC 100%, #F1F5FC 118%)" }}>
@@ -1251,6 +1251,7 @@ const TransactionPages = () => {
                     setShowInput(false)
                     setShowBtn(true)
                     setPickMed('Search Medicine')
+                    setDropMed(true)
                   }} className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="RecipeModal">
                     <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     <span className="sr-only">Close modal</span>
@@ -1323,6 +1324,7 @@ const TransactionPages = () => {
                       setShowInput(false)
                       setShowBtn(true)
                       setPickMed('Search Medicine')
+                      setDropMed(true)
                     }}>Cancel</button>
                     <button type='button' className={`${recipe.length < 1 ? 'bg-gray-300' : 'bg-main-500  hover:bg-main-700 focus:ring-main-500 hover:-translate-y-1'} text-lg transition my-4 p-1 mr-5 font-semibold text-white rounded w-44`} onClick={() => {
                       setModalAccept(modalRecipe)

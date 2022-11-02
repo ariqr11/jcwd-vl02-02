@@ -242,23 +242,23 @@ const DashboardPage = (props) => {
                             </div>
                             <div className='sm:mt-5 mt-2 sm:grid sm:grid-cols-2'>
                                 <div className='grid sm:grid-cols-3 grid-cols-2'>
-                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5' type='button' onClick={() => navigate('/admin/transaction?status=waiting')}>
+                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5 cursor-pointer' type='button' onClick={() => navigate('/admin/transaction?status=waiting')}>
                                         <p className="sm:text-xl text-sm font-semibold sm:mt-5 mt-2 sm:mb-3 px-5">New Order</p>
                                         <p className="sm:text-4xl text-sm font-bold sm:mt-3 sm:mb-3 pl-5">{transaction[0]}</p>
                                     </div>
-                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5' type='button' onClick={() => navigate('/admin/transaction?status=process')}>
+                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5 cursor-pointer' type='button' onClick={() => navigate('/admin/transaction?status=process')}>
                                         <p className="sm:text-xl text-sm font-semibold sm:mt-5 mt-2 sm:mb-3 px-5">Ready To Ship</p>
                                         <p className="sm:text-4xl text-sm font-bold sm:mt-3 sm:mb-3 pl-5">{transaction[1]}</p>
                                     </div>
-                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5' type='button' onClick={() => navigate('/admin/transaction?status=on')}>
+                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5 cursor-pointer' type='button' onClick={() => navigate('/admin/transaction?status=on')}>
                                         <p className="sm:text-xl text-sm font-semibold sm:mt-5 mt-2 sm:mb-3 px-5">In Delivery</p>
                                         <p className="sm:text-4xl text-sm font-bold sm:mt-3 sm:mb-3 pl-5">{transaction[2]}</p>
                                     </div>
-                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5' type='button' onClick={() => navigate('/admin/transaction?status=completed')}>
+                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5 cursor-pointer' type='button' onClick={() => navigate('/admin/transaction?status=completed')}>
                                         <p className="sm:text-xl text-sm font-semibold sm:mt-5 mt-2 sm:mb-3 px-5">Order Completed</p>
                                         <p className="sm:text-4xl text-sm font-bold sm:mt-3 sm:mb-3 pl-5">{transaction[3]}</p>
                                     </div>
-                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5' type='button' onClick={() => navigate('/admin/transaction?status=canceled')}>
+                                    <div className='border shadow-lg h-16 sm:h-40 bg-gray-100 rounded-lg my-2 mx-2 sm:mx-5 cursor-pointer' type='button' onClick={() => navigate('/admin/transaction?status=canceled')}>
                                         <p className="sm:text-xl text-sm font-semibold sm:mt-5 mt-2 sm:mb-3 px-5">Order Canceled</p>
                                         <p className="sm:text-4xl text-sm font-bold sm:mt-3 sm:mb-3 pl-5">{transaction[4]}</p>
                                     </div>
@@ -270,7 +270,7 @@ const DashboardPage = (props) => {
                                     <button className={`${productOut.length > 7 ? 'font-bold pl-5 text-main-800 mt-4' : 'hidden'}`} onClick={() => setModalProduct(true)}>See All Low Stock Product</button>
                                 </div>
                             </div>
-                            <div type='button' onClick={() => navigate('/admin/report')} className='sm:ml-5 ml-2 mt-3 border border-teal-500 rounded-lg bg-white mr-5 sm:mr-10 mb-10'>
+                            <div type='button' onClick={() => navigate('/admin/report')} className='sm:ml-5 ml-2 mt-3 border border-teal-500 rounded-lg bg-white mr-5 sm:mr-10 mb-10 cursor-pointer'>
                                 <p className="sm:text-3xl text-sm font-bold mt-5 mb-3 pl-5 text-main-500 flex items-center">TOTAL REVENUE <p className='ml-2 text-sm sm:text-xl'>(Only 12 Months)</p></p>
                                 <Line style={{ width: 1200, maxHeight: 400 }} data={revenueReport} options={options} />
                             </div>
