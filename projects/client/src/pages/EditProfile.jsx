@@ -166,7 +166,7 @@ const EditProfile = () => {
 
     const onChangeNewProfilePic = (files) => {
         if(files.size>=1000000 ){
-            return toast.error(`Max 1 Mb`, {
+            return toast.error(`File size max 1 Mb`, {
                 theme: "colored",
                 position: "top-center",
                 autoClose: 2000,
@@ -183,7 +183,7 @@ const EditProfile = () => {
                     case'gif':
                 return setNewProfilPict(files)
             }
-            return toast.error(`Wrong file format`, {
+            return toast.error(`Format file must jpg,png,gif`, {
                 theme: "colored",
                 position: "top-center",
                 autoClose: 2000,

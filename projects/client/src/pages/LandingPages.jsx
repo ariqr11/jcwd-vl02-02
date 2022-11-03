@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import image from '../assets/undraw_doctors_hwty.svg'
 import { GiMedicines, GiChestnutLeaf, GiShinyApple, GiBeerBottle, GiSquareBottle, GiGlassShot, GiNotebook, GiShipBow } from 'react-icons/gi';
 import bca from '../assets/Bank BCA Logo (PNG-1080p) - FileVector69.png'
@@ -17,9 +17,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import image2 from '../assets/undraw_conference_re_2yld.svg'
 import image3 from '../assets/undraw_shopping_app_flsj.svg'
+import { useParams,useLocation } from 'react-router-dom';
 
 const LandingPages = () => {
   const navigate = useNavigate()
+  const loc = useLocation()
   const { email, status, iduser } = useSelector((state) => {
     return {
       email: state.userReducer.email,
@@ -27,7 +29,7 @@ const LandingPages = () => {
       iduser: state.userReducer.iduser
     }
   })
-
+  console.log(loc.search)
   let dataCategory = [
     {
       id: 1,
@@ -60,6 +62,26 @@ const LandingPages = () => {
       fill: 'fill-yellow-500'
     },
   ]
+
+  useEffect(()=>{
+    toastGoogleSigin()
+  },[])
+
+  const toastGoogleSigin = () => {
+    if(loc.search === '?_status=googlesucces'){
+      toast.success('Register success cek your email ', {
+        theme: "colored",
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+    })
+    }
+
+  }
 
   return (
     <div>

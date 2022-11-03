@@ -266,7 +266,7 @@ module.exports = {
             let token = createToken({ ...resultUser[0], newEmail })
             var source = fs.readFileSync(path.join(__dirname, '../template-email/changeEmailConfirmation.hbs'), 'utf-8')
             var template = Handlebars.compile(source)
-            var dataEmail = { 'fullname': resultUser[0].fullname, 'fe_url': process.env.FE_URL, 'token': token }
+            var dataEmail = { 'username': resultUser[0].username, 'fe_url': process.env.FE_URL, 'token': token }
             await transport.sendMail({
               from: 'MEDCARE ADMIN',
               to: newEmail,
@@ -469,7 +469,7 @@ module.exports = {
               html: template(data)
               })
               }
-              res.redirect(process.env.FE_URL)
+              res.redirect(`${process.env.FE_URL}?_status=googlesucces`)
     }
   },
 

@@ -91,7 +91,6 @@ const Register = () => {
             setLoading(false)
             console.log('data token', res.data)
             if(res.data.success){
-                // navigate('/',{replace:true})
                 toast.success('Register Success', {
                     theme: "colored",
                     position: "top-center",
@@ -138,6 +137,7 @@ const Register = () => {
             }
         })
     }
+    
 
   return (
     <div>
