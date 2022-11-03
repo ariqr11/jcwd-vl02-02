@@ -64,7 +64,6 @@ const LandingPages = () => {
   return (
     <div>
       <div>
-
         <div className='px-3 lg:px-[9.5rem]'>
           {/* Verification dipindahkan ke navbar */}
           <Carousel />
@@ -74,9 +73,9 @@ const LandingPages = () => {
             </div>
             <div className='mx-auto py-2 lg:mx-1 lg:py-4 md:mt-10 lg:mt-10 lg:flex justify-around'>
               <div className=''>
-                <p className=' text-[#213360] text-sm font-bold lg:text-2xl font-Public ml-5 md:ml-0'>Punya Resep Dokter ?</p>
+                <p className=' text-[#213360] text-xs  font-bold lg:text-2xl font-Public ml-5 md:ml-0 md:text-sm'>Have a Doctor's Prescription?</p>
                 <div className='w-80 h-12'>
-                  <p className='text-[#525252] hidden md:flex'>Hanya foto resep anda dan unggah max 10mb tanpa perlu antri obat akan dikirimkan ke lokasi anda</p>
+                  <p className='text-[#525252] hidden md:flex'>Just take a photo of your prescription and upload a max of 10mb without the need to queue. The medicine will be sent to your location</p>
                 </div>
               </div>
               <div className=' md:mt-10 lg:mt-5'>
@@ -107,15 +106,15 @@ const LandingPages = () => {
                     });
                   }
                 }}
-                  className='bg-teal-500 hover:bg-teal-600 ml-5 w-32 h-8 md:ml-0 lg:w-32 lg:h-12 rounded-lg text-white font-Public'
-                >Unggah Resep</button>
+                  className='bg-teal-500 hover:bg-teal-600 ml-5 w-32 h-8 md:ml-0 lg:w-32 lg:h-12 md:mt-10 rounded-lg text-white font-Public'
+                >Upload Recipe</button>
               </div>
             </div>
           </div>
           <div className='py-5'>
             <div className='flex justify-between my-2'>
-              <p className='text-sm font-bold text-[#213360] '>Kategori</p>
-              <p className='text-xs font-bold  text-main-500' onClick={() => navigate('/product')}>Lihat Semua</p>
+              <p className='text-sm font-bold text-[#213360] '>Category</p>
+              <p className='text-xs font-bold  text-main-500 cursor-pointer' onClick={() => navigate('/product')}>See all</p>
             </div>
             <div className='overflow-y-auto w-full'>
               <div className='flex justify-between mx-auto py-5' >
@@ -138,8 +137,8 @@ const LandingPages = () => {
                 <div className='mt-2 flex px-5 lg:px-20'>
                   <img src={image2} alt='medcare.com' className='h-24 lg:h-36' />
                   <div className='pt-3 lg:pt-5 lg:pl-10 '>
-                    <p className='text-medium font-bold  text-center text-txt-500 lg:text-2xl'>Program Hamil</p>
-                    <p className='text-sm text-center  text-[#213360]'>Rencanakan kelahiran buah hati anda</p>
+                    <p className='text-medium font-bold  text-center text-txt-500 lg:text-2xl'>Pregnant Program</p>
+                    <p className='text-sm text-center  text-[#213360]'>Plan the birth of your baby</p>
                   </div>
                 </div>
               </div>
@@ -148,24 +147,25 @@ const LandingPages = () => {
                   <img src={image3} alt='medcare.com' className='h-24 lg:h-36' />
                   <div className='pt-3 lg:pt-5 lg:pl-10 '>
                     <p className='text-medium font-bold  text-center text-txt-500 lg:text-2xl'>10-10 Flash Sale</p>
-                    <p className='text-sm text-center  text-[#213360]'>Dapatkan diskon besar untuk keperluan anda</p>
+                    <p className='text-sm text-center  text-[#213360]'>Get big discounts for your needs</p>
                   </div>
                 </div>
               </div>
             </div>
             <div className='flex justify-between mt-8'>
-              <p className='text-sm font-bold text-txt-500 font-Public'>Produk Populer</p>
-              <p className='text-xs font-bold  text-main-500 font-Public' onClick={() => navigate('/product')}>Lihat Semua</p>
+              <p className='text-sm font-bold text-txt-500 font-Public'>Popular Products</p>
+              <p className='text-xs font-bold  text-main-500 font-Public cursor-pointer' onClick={() => navigate('/product')}>See all</p>
             </div>
             {/* Gunakan Produk Component */}
             <div className='bg-gradient-to-t from-white to-teal-50 mt-8'>
               <ProductCategory
                 id={2}
+                limit={10}
               />
             </div>
           </div>
           <div className='mb-8 mt-4 '>
-            <p className='text-sm font-bold text-blue-800 font-Public'>Jaminan Untuk Anda</p>
+            <p className='text-sm font-bold text-blue-800 font-Public'>Guarantee For You</p>
           </div>
           <div className='my-2'>
             <div className='grid gap-2 lg:grid-cols-3'>
@@ -173,8 +173,8 @@ const LandingPages = () => {
                 <div className='grid grid-cols-3 px-5 py-4'>
                   <GiMedicines size={80} className='fill-red-600' />
                   <div className='col-span-2'>
-                    <p className='text-blue-900 font-bold text-lg font-Public'>100% Obat asli</p>
-                    <p className='text-sm text-gray-700 font-Public'>Semua Produk yang kami jual dijamin asli dengan kualitas yang baik</p>
+                    <p className='text-blue-900 font-bold text-lg font-Public'>100% original medicine</p>
+                    <p className='text-sm text-gray-700 font-Public'>All the products we sell are guaranteed authentic with good quality</p>
                   </div>
                 </div>
               </div>
@@ -182,8 +182,8 @@ const LandingPages = () => {
                 <div className='grid grid-cols-3 px-5 py-4'>
                   <GiNotebook size={80} className='fill-green-600' />
                   <div className='col-span-2'>
-                    <p className='text-blue-900 font-bold text-lg font-Public'>Terjamin dan Hemat</p>
-                    <p className='text-sm text-gray-700 font-Public'>Kami menjamin pengembalian uang dari selisih perbedaan harga</p>
+                    <p className='text-blue-900 font-bold text-lg font-Public'>Guaranteed and Save</p>
+                    <p className='text-sm text-gray-700 font-Public'>We guarantee a refund of the difference in price differences</p>
                   </div>
                 </div>
               </div>
@@ -191,8 +191,8 @@ const LandingPages = () => {
                 <div className='grid grid-cols-3 px-5 py-4'>
                   <GiShipBow size={80} className='fill-gray-300' />
                   <div className='col-span-2'>
-                    <p className='text-blue-900 font-bold text-lg font-Public'>Gratis Ongkir</p>
-                    <p className='text-sm text-gray-700 font-Public'>Kami kirim pembelian anda secara gratis tanpa antri</p>
+                    <p className='text-blue-900 font-bold text-lg font-Public'>Free Shipping</p>
+                    <p className='text-sm text-gray-700 font-Public'>We send your purchases for free without queuing</p>
                   </div>
                 </div>
               </div>
@@ -200,7 +200,7 @@ const LandingPages = () => {
           </div>
           <div className='hidden lg:block w-full bg-gray-100 my-8 h-40'>
             <div className='p-4'>
-              <p className='text-center text-txt-500 text-base leading-[18.8px] font-bold font-Public'>Metode Pembayaran</p>
+              <p className='text-center text-txt-500 text-base leading-[18.8px] font-bold font-Public'>Payment method</p>
               <div className='container mx-auto px-20 mt-10'>
                 <div className='flex justify-center '>
                   <img src={bca} className='h-7' alt='medcare.com' />

@@ -16,31 +16,31 @@ const BankInfo = (props) => {
                         <ol>
                             <li className="flex">
                                 <p>1.</p>
-                                <p className="ml-2">Masukkan Kartu ATM BNI & PIN.</p>
+                                <p className="ml-2">Enter BNI ATM Card & PIN.</p>
                             </li>
                             <li className="flex">
                                 <p>2.</p>
-                                <p className="ml-2">Pilih menu Transaksi Lainnya {'>'} Transfer {'>'} ke Rekening BNI Virtual Account.</p>
+                                <p className="ml-2">Select the Other Transactions menu {'>'} Transfer {'>'} to the BNI Virtual Account.</p>
                             </li>
                             <li className="flex">
                                 <p>3.</p>
-                                <p className="ml-2">Masukkan 5 angka kode perushaan untuk Medcare (10011) dan nomor HP yang kamu daftarkan di akun Medcare (contoh: 10011081234567890).</p>
+                                <p className="ml-2">Enter the 5 digit company code for Medcare (10011) and the mobile number you registered in your Medcare account (example: 10011081234567890).</p>
                             </li>
                             <li className="flex">
                                 <p>4.</p>
-                                <p className="ml-2">Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti No. VA, Nama, Produk dan Total Tagihan.</p>
+                                <p className="ml-2">On the confirmation page, make sure the payment details are correct such as No. VA, Name, Product and Total Bill.</p>
                             </li>
                             <li className="flex">
                                 <p>5.</p>
-                                <p className="ml-2">Pastikan nama kamu dan Total tagihannya benar.</p>
+                                <p className="ml-2">Make sure your name and total bill are correct.</p>
                             </li>
                             <li className="flex">
                                 <p>6.</p>
-                                <p className="ml-2">Jika sudah benar, klik Ya.</p>
+                                <p className="ml-2">If it is correct, click Yes.</p>
                             </li>
                             <li className="flex">
                                 <p>7.</p>
-                                <p className="ml-2">Simpan struk transaksi sebagai bukti pembayaran.</p>
+                                <p className="ml-2">Save the transaction receipt as proof of payment.</p>
                             </li>
                         </ol>
                     </Accordion.Content>
@@ -51,33 +51,33 @@ const BankInfo = (props) => {
                     </AccordionTitle>
                     <Accordion.Content>
                         <ol>
-                            <li className="flex">
+                        <li className="flex">
                                 <p>1.</p>
-                                <p className="ml-2">Masukkan Kartu ATM BCA & PIN.</p>
+                                <p className="ml-2">Enter BCA ATM Card & PIN.</p>
                             </li>
                             <li className="flex">
                                 <p>2.</p>
-                                <p className="ml-2">Pilih menu Transaksi Lainnya {'>'} Transfer {'>'} ke Rekening BCA Virtual Account.</p>
+                                <p className="ml-2">Select the Other Transactions menu {'>'} Transfer {'>'} to the BCA Virtual Account.</p>
                             </li>
                             <li className="flex">
                                 <p>3.</p>
-                                <p className="ml-2">Masukkan 5 angka kode perushaan untuk Medcare (10011) dan nomor HP yang kamu daftarkan di akun Medcare (contoh: 10011081234567890).</p>
+                                <p className="ml-2">Enter the 5 digit company code for Medcare (10011) and the mobile number you registered in your Medcare account (example: 10011081234567890).</p>
                             </li>
                             <li className="flex">
                                 <p>4.</p>
-                                <p className="ml-2">Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti No. VA, Nama, Produk dan Total Tagihan.</p>
+                                <p className="ml-2">On the confirmation page, make sure the payment details are correct such as No. VA, Name, Product and Total Bill.</p>
                             </li>
                             <li className="flex">
                                 <p>5.</p>
-                                <p className="ml-2">Pastikan nama kamu dan Total tagihannya benar.</p>
+                                <p className="ml-2">Make sure your name and total bill are correct.</p>
                             </li>
                             <li className="flex">
                                 <p>6.</p>
-                                <p className="ml-2">Jika sudah benar, klik Ya.</p>
+                                <p className="ml-2">If it is correct, click Yes.</p>
                             </li>
                             <li className="flex">
                                 <p>7.</p>
-                                <p className="ml-2">Simpan struk transaksi sebagai bukti pembayaran.</p>
+                                <p className="ml-2">Save the transaction receipt as proof of payment.</p>
                             </li>
                         </ol>
                     </Accordion.Content>
@@ -88,33 +88,33 @@ const BankInfo = (props) => {
                     </AccordionTitle>
                     <Accordion.Content>
                         <ol>
-                            <li className="flex">
+                        <li className="flex">
                                 <p>1.</p>
-                                <p className="ml-2">Masukkan Kartu ATM BRI & PIN.</p>
+                                <p className="ml-2">Enter BRI ATM Card & PIN.</p>
                             </li>
                             <li className="flex">
                                 <p>2.</p>
-                                <p className="ml-2">Pilih menu Transaksi Lainnya {'>'} Transfer {'>'} ke Rekening BRI Virtual Account.</p>
+                                <p className="ml-2">Select the Other Transactions menu {'>'} Transfer {'>'} to the BRI Virtual Account.</p>
                             </li>
                             <li className="flex">
                                 <p>3.</p>
-                                <p className="ml-2">Masukkan 5 angka kode perushaan untuk Medcare (10011) dan nomor HP yang kamu daftarkan di akun Medcare (contoh: 10011081234567890).</p>
+                                <p className="ml-2">Enter the 5 digit company code for Medcare (10011) and the mobile number you registered in your Medcare account (example: 10011081234567890).</p>
                             </li>
                             <li className="flex">
                                 <p>4.</p>
-                                <p className="ml-2">Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti No. VA, Nama, Produk dan Total Tagihan.</p>
+                                <p className="ml-2">On the confirmation page, make sure the payment details are correct such as No. VA, Name, Product and Total Bill.</p>
                             </li>
                             <li className="flex">
                                 <p>5.</p>
-                                <p className="ml-2">Pastikan nama kamu dan Total tagihannya benar.</p>
+                                <p className="ml-2">Make sure your name and total bill are correct.</p>
                             </li>
                             <li className="flex">
                                 <p>6.</p>
-                                <p className="ml-2">Jika sudah benar, klik Ya.</p>
+                                <p className="ml-2">If it is correct, click Yes.</p>
                             </li>
                             <li className="flex">
                                 <p>7.</p>
-                                <p className="ml-2">Simpan struk transaksi sebagai bukti pembayaran.</p>
+                                <p className="ml-2">Save the transaction receipt as proof of payment.</p>
                             </li>
                         </ol>
                     </Accordion.Content>

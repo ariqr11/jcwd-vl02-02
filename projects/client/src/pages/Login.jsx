@@ -22,7 +22,6 @@ const Login = () => {
   const [email,setEmail]=useState('')
   const [password, setPassword]=useState('')
 
-  console.log('ini login')
 
   useEffect(()=>{
     if(window.location.search.length >0){

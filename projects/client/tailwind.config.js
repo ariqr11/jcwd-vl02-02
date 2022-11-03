@@ -11,6 +11,13 @@ module.exports = {
       fontFamily:{
         'Public':['Public Sans', 'sans-serif',defaultTheme.fontFamily.Public]
       },
+      width: {
+        'fit-navbarmd': '656px',
+        'fit-navbarlg': '912px',
+        'fit-navbarxl': '1168px',
+        'fit-productmd':'620px',
+        'fit-productxl':'876px'
+      }
     },
     colors: {
       'main': {

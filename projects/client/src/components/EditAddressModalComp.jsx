@@ -109,29 +109,33 @@ const EditAddressComponent = ({ selected, showModal }) => {
             if (tempProvince !== '' && tempCity === '') {
                 setCheckEditCity('show');
             } else {
-                let edit = await axios.patch(API_URL + '/api/address/update', { dataEdit, idaddress: selectedEdit.idaddress }, {
-                    headers: {
-                        'Authorization': `Bearer ${userToken}`
+                if (inputEditPostalCode.match(/[a-zA-Z]/)){
+                    setCheckEditPostal('show');
+                } else {
+                    let edit = await axios.patch(API_URL + '/api/address/update', { dataEdit, idaddress: selectedEdit.idaddress }, {
+                        headers: {
+                            'Authorization': `Bearer ${userToken}`
+                        }
+                    })
+    
+                    if (edit.data.success) {
+                        toast.success('Address Edit Success!', {
+                            theme: 'colored',
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        showModal('');
+                        setInputEditFullAddress('');
+                        setInputEditDistrict('');
+                        setInputEditPostalCode('');
+                        setSelectedEditCityID(0);
+                        setSelectedEditProvinceID(0);
                     }
-                })
-
-                if (edit.data.success) {
-                    toast.success('Address Edit Success!', {
-                        theme: 'colored',
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    showModal('');
-                    setInputEditFullAddress('');
-                    setInputEditDistrict('');
-                    setInputEditPostalCode('');
-                    setSelectedEditCityID(0);
-                    setSelectedEditProvinceID(0);
                 }
             }
             console.log(dataEdit)

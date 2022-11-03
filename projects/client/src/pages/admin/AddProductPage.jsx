@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiFillEdit } from "react-icons/ai";
 import AdminComponent from "../../components/AdminComponent";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { IoMdArrowDropright } from "react-icons/io";
 import { API_URL } from "../../helper";
 import ModalAddMainUnit from "../../components/ModalAddMainUnit";
@@ -15,7 +15,6 @@ import { Helmet } from "react-helmet";
 
 const AddProductPage = () => {
     const navigate = useNavigate();
-    const { state, search } = useLocation();
     const [spinner, setSpinner] = React.useState(false);
 
     const [product_name, setProduct_Name] = React.useState('');
@@ -30,15 +29,12 @@ const AddProductPage = () => {
     const [aturan_pakai, setAturan_Pakai] = React.useState('');
     const [stock_unit, setStock_Unit] = React.useState('');
     const [category, setCategory] = React.useState([]);
-    const [isDisable, setIsDisable] = React.useState(false);
 
     // Add new netto unit & main unit
     const [all_netto, setAll_Netto] = React.useState([]);
     const [all_main, setAll_Main] = React.useState([]);
-
     const [modalAddMainUnitOn, setModalAddMainUnitOn] = React.useState(false);
     const [unit_type, setUnit_Type] = React.useState('');
-
     const [modalAddNettoUnitOn, setModalAddNettoUnitOn] = React.useState(false);
 
     // Add, edit, delete category 
@@ -121,7 +117,7 @@ const AddProductPage = () => {
             .then((res) => {
                 setTimeout(() => {
                     if (res.data.success) {
-                        toast.success('Add product berhasil', {
+                        toast.success('Add product success', {
                             position: "bottom-center",
                             autoClose: 2000,
                             hideProgressBar: true,
@@ -131,7 +127,18 @@ const AddProductPage = () => {
                             progress: undefined,
                         })
                         setSpinner(false);
-                        navigate('/admin/product', { replace: true }); 
+                        navigate('/admin/product', { replace: true });
+                    } else {
+                        toast.error(`Product with name ${product_name} is already existed, please input another product`, {
+                            position: "bottom-center",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                        setSpinner(false);
                     };
                 }, 3000);
             }).catch((err) => {
@@ -184,7 +191,7 @@ const AddProductPage = () => {
                                                     Product Name
                                                 </label>
                                                 {/* <input type="text" onChange={(e) => setProduct_Name(e.target.value)} name="product_name" id="product_name" className={`border block w-full p-2.5 text-sm rounded-lg ${product_name ? 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Contoh : Sanmol 6 Kapsul" required /> */}
-                                                <input type="text" onChange={(e) => setProduct_Name(e.target.value)} name="product_name" id="product_name" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Contoh : Sanmol 6 Kapsul" required />
+                                                <input type="text" onChange={(e) => setProduct_Name(e.target.value)} name="product_name" id="product_name" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Example : Sanmol 6 Kapsul" required />
                                             </div>
                                             <div>
                                                 <label htmlFor="description" className="block mt-4 mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-500 after:ml-0.5">
@@ -195,7 +202,7 @@ const AddProductPage = () => {
                                                         Rp
                                                     </span>
                                                     {/* <input type="number" onChange={(e) => setPrice(e.target.value)} name="description" id="description" className={`rounded-none rounded-r-lg block flex-1 min-w-0 w-full text-sm p-2.5 ${price ? 'bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Masukkan harga" required /> */}
-                                                    <input type="number" onChange={(e) => setPrice(e.target.value)} name="description" id="description" className={`rounded-none rounded-r-lg block flex-1 min-w-0 w-full text-sm p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Masukkan harga" required />
+                                                    <input type="number" onChange={(e) => setPrice(e.target.value)} name="description" id="description" className={`rounded-none rounded-r-lg block flex-1 min-w-0 w-full text-sm p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Input product price" required />
                                                 </div>
                                             </div>
                                             <div>
@@ -203,24 +210,24 @@ const AddProductPage = () => {
                                                     Description
                                                 </label>
                                                 {/* <textarea onChange={(e) => setDescription(e.target.value)} className={`text-sm rounded-lg block w-full p-2.5 ${description ? 'bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Tulis deskripsi singkat dari obat untuk inhtmlFormasi pembeli" type='text' /> */}
-                                                <textarea onChange={(e) => setDescription(e.target.value)} className={`text-sm rounded-lg block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Tulis deskripsi singkat dari obat untuk inhtmlFormasi pembeli" type='text' />
+                                                <textarea onChange={(e) => setDescription(e.target.value)} className={`text-sm rounded-lg block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Input the description of the medicine" type='text' />
                                             </div>
                                             <div>
                                                 <label htmlFor="dosis" className="block mt-4 mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-500 after:ml-0.5">
-                                                    Dosis
+                                                    Dose
                                                 </label>
                                                 {/* <input type="text" onChange={(e) => setDosis(e.target.value)} name="dosis" id="dosis" className={`border text-sm rounded-lg block w-full p-2.5 ${dosis ? "bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" : 'border-red-600 text-gray-500'}`} placeholder="Anjuran dosis penggunaan obat" required /> */}
-                                                <input type="text" onChange={(e) => setDosis(e.target.value)} name="dosis" id="dosis" className={`border text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Anjuran dosis penggunaan obat" required />
+                                                <input type="text" onChange={(e) => setDosis(e.target.value)} name="dosis" id="dosis" className={`border text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Dose recommendation of the medicine" required />
                                             </div>
                                         </div>
                                         <div className="ml-8">
                                             <div>
                                                 <div>
                                                     <label htmlFor="aturan_pakai" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-500 after:ml-0.5">
-                                                        Aturan Pakai
+                                                        Use Recommendation
                                                     </label>
                                                     {/* <input type="text" onChange={(e) => setAturan_Pakai(e.target.value)} name="aturan_pakai" id="aturan_pakai" className={`border text-sm rounded-lg block w-full p-2.5 mb-4 ${aturan_pakai ? 'bg-gray-50 border-gray-300 text-gray-900  focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Anjuran aturan pemakaian obat" required /> */}
-                                                    <input type="text" onChange={(e) => setAturan_Pakai(e.target.value)} name="aturan_pakai" id="aturan_pakai" className={`border text-sm rounded-lg block w-full p-2.5 mb-4 bg-gray-50 border-gray-300 text-gray-900  focus:ring-blue-500 focus:border-blue-500`} placeholder="Anjuran aturan pemakaian obat" required />
+                                                    <input type="text" onChange={(e) => setAturan_Pakai(e.target.value)} name="aturan_pakai" id="aturan_pakai" className={`border text-sm rounded-lg block w-full p-2.5 mb-4 bg-gray-50 border-gray-300 text-gray-900  focus:ring-blue-500 focus:border-blue-500`} placeholder="Use rules recommendation of the medicine" required />
                                                 </div>
                                                 <div className="columns-2">
                                                     <div>
@@ -229,7 +236,7 @@ const AddProductPage = () => {
                                                                 Main Stock
                                                             </label>
                                                             {/* <input type="number" onChange={(e) => setStock_Unit(e.target.value)} name="category" id="category" className={`border block w-full p-2.5 text-sm rounded-lg ${stock_unit ? ' bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Jumlah stok obat" required /> */}
-                                                            <input type="number" onChange={(e) => setStock_Unit(e.target.value)} name="category" id="category" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Jumlah stok obat" required />
+                                                            <input type="number" onChange={(e) => setStock_Unit(e.target.value)} name="category" id="category" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Amount of main stock" required />
                                                         </div>
                                                         <div>
                                                             <label className="mt-4 mb-2 text-sm font-medium text-gray-900 flex after:content-['*'] after:text-red-500 after:ml-0.5">
@@ -239,7 +246,7 @@ const AddProductPage = () => {
                                                             </label>
                                                             {/* <select onChange={(e) => setDefault_Unit(e.target.value)} className={`border block w-full p-2.5 mb-2 text-sm rounded-lg ${default_unit ? 'bg-gray-50 border-gray-300 text-gray-500 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`}> */}
                                                             <select onChange={(e) => setDefault_Unit(e.target.value)} className={`border block w-full p-2.5 mb-2 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-500 focus:ring-blue-500 focus:border-blue-500`}>
-                                                                <option defaultValue='Pilih Unit Utama'>Pilih unit utama obat</option>
+                                                                <option defaultValue='Choose main unit'>Choose main unit</option>
                                                                 {printMain()}
                                                             </select>
                                                         </div>
@@ -251,7 +258,7 @@ const AddProductPage = () => {
                                                                 Netto Stock
                                                             </label>
                                                             {/* <input defaultValue={netto_stock} type="number" onChange={(e) => setNetto_Stock(e.target.value)} name="description" id="description" className={`border block w-full p-2.5 text-sm rounded-lg ${netto_stock ? 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`} placeholder="Isi per obat" required /> */}
-                                                            <input defaultValue={netto_stock} type="number" onChange={(e) => setNetto_Stock(e.target.value)} name="description" id="description" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Isi per obat" required />
+                                                            <input defaultValue={netto_stock} type="number" onChange={(e) => setNetto_Stock(e.target.value)} name="description" id="description" className={`border block w-full p-2.5 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500`} placeholder="Amount of netto stock" required />
                                                         </div>
                                                         <div>
                                                             <label htmlFor="description" className="block mt-4 mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-500 after:ml-0.5">
@@ -261,7 +268,7 @@ const AddProductPage = () => {
                                                             </label>
                                                             {/* <select onChange={(e) => setNetto_Unit(e.target.value)} className={`border block w-full p-2.5 mb-2 text-sm rounded-lg ${netto_unit ? 'bg-gray-50 border-gray-300 text-gray-500 focus:ring-blue-500 focus:border-blue-500' : 'border-red-600 text-gray-500'}`}> */}
                                                             <select onChange={(e) => setNetto_Unit(e.target.value)} className={`border block w-full p-2.5 mb-2 text-sm rounded-lg bg-gray-50 border-gray-300 text-gray-500 focus:ring-blue-500 focus:border-blue-500`}>
-                                                                <option defaultValue='Pilih Unit Netto'>Pilih unit isi obat</option>
+                                                                <option defaultValue='Choose netto unit'>Choose netto unit</option>
                                                                 {prtintNetto()}
                                                             </select>
                                                         </div>
@@ -282,7 +289,7 @@ const AddProductPage = () => {
                                                                         :
                                                                         <>
                                                                             <svg aria-hidden="true" className="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to edit product picture</span> or drag and drop</p>
+                                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to add product picture</span> or drag and drop</p>
                                                                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                                                         </>
                                                                 }
@@ -301,12 +308,12 @@ const AddProductPage = () => {
                                             !spinner ?
 
                                                 product_name && category_id && price && description && aturan_pakai && dosis && netto_stock && netto_unit && default_unit && stock_unit && picture ?
-                                                    <button className=" rounded-lg px-4 py-2 ml-4 text-white bg-btn-500 font-bold" onClick={() => addProduct() }>Submit</button>
+                                                    <button className=" rounded-lg px-4 py-2 ml-4 text-white bg-btn-500 font-bold" onClick={() => addProduct()}>Submit</button>
                                                     :
                                                     <button className=" rounded-lg px-4 py-2 ml-4 text-white bg-btn-500 bg-opacity-60 font-bold cursor-not-allowed" disabled>Submit</button>
 
                                                 :
-                                                <SpinnerComp width={"81px"} height={"38px"}/>
+                                                <SpinnerComp width={"81px"} height={"38px"} />
                                         }
                                         {/* {
                                             product_name && category_id && price && description && aturan_pakai && dosis && netto_stock && netto_unit && default_unit && stock_unit && picture ?

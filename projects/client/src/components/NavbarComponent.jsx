@@ -80,7 +80,7 @@ const NavbarComponent = (props) => {
       })
     }
   }
-
+  
 
   return (
     <div>
@@ -103,7 +103,7 @@ const NavbarComponent = (props) => {
                 }, 1000)
               }}>
                 <img src={logo} className='h-9' alt='medcare.com' />
-                <span className='text-sm bg-gradient-to-r from-green-500 to-blue-600 text-transparent font-extrabold bg-clip-text mt-2'>MedCare</span>
+                <span className='text-sm bg-gradient-to-r from-green-500 to-blue-600 text-transparent font-extrabold bg-clip-text mt-2 cursor-pointer'>MedCare</span>
               </div>
             </div>
             <div className='flex grow relative'>

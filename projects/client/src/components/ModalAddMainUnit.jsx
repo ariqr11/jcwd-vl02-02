@@ -60,7 +60,7 @@ const ModalAddMainUnit = ({ setModalAddMainUnitOn, unit_type }) => {
                     {/* <!-- Modal content --> */}
                     <div className="pt-6">
                         <h3 className="mb-3 text-xl font-medium text-gray-900">Add new main unit</h3>
-                        <input id="search" type="form" onChange={(e) => setNewMainUnit(e.target.value)} placeholder="Input nama baru untuk main unit" className="border rounded-lg py-2 px-2 text-sm w-full" />
+                        <input id="search" type="form" onChange={(e) => setNewMainUnit(e.target.value)} placeholder="Input new name for main unit" className="border rounded-lg py-2 px-2 text-sm w-full" />
                         <div className="mt-4 flex justify-end">
                         <button onClick={handleCancelClick} className="rounded-lg px-4 py-2 text-btn-500 text-sm bg-white border border-btn-500 font-bold">Cancel</button>
                         <button onClick={handleOKClick} className=" rounded-lg px-4 py-2 ml-4 text-white text-sm bg-btn-500 font-bold">Submit</button>

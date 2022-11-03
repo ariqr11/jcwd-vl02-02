@@ -31,7 +31,7 @@ const ProductCategory = (props) => {
         // After : getproduct
 
         axios.post(API_URL + `/api/product/getproduct?${props.id}`, {
-            limit: 5,
+            limit: props.limit,
             sort: '',
             offset: ''
         })
@@ -230,9 +230,9 @@ const ProductCategory = (props) => {
                             </div>
                         </div>
                     </Link >
-                    <div className='px-5 py-5'>
-                        <button type='button' className='border-2 border-main-500 text-main-500 px-10 text-base leading-[14px] rounded-lg py-2 font-bold hover:bg-main-500 hover:text-white font-Public'
-                            onClick={() => onAddToCart(val.idproduct)}>Keranjang</button>
+                    <div className='py-5 flex justify-center'>
+                        <button type='button' className='border-2 border-main-500 text-main-500 px-8 text-base leading-[14px] rounded-lg py-2 font-bold  hover:bg-main-500 hover:text-white font-Public'
+                            onClick={() => onAddToCart(val.idproduct)}>Add to cart</button>
                     </div>
                 </div >
 

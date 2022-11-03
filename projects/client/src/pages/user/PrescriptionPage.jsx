@@ -44,7 +44,7 @@ const Prescription = (props) => {
 
     React.useEffect(() => {
         getAddress();
-    }, []);
+    }, [showAddressModal, showEditAddressModal, showNewAddressModal]);
 
     const getAddress = async () => {
         try {
@@ -188,8 +188,7 @@ const Prescription = (props) => {
                 let getDeliv = await axios.get(API_URL + `/api/rajaongkir/delivery/${origin}/${selectedAddress.city_id}/${weight}/${courier}`)
 
                 console.log(getDeliv.data);
-                if (getDeliv.data.length > 0) {
-                    setDelivery(getDeliv.data);
+                if (getDeliv.data.length >= 0) {
                     setDelivery(getDeliv.data);
                     setTimeout(() => {
                         setLoadDelivery(false)

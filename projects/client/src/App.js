@@ -90,6 +90,8 @@ function App() {
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/change-pass' element={<ChangePassword/>} />
             <Route path='/address' element={<AddressComponent/>} />
+            <Route path='/:user/transaction' element={<UserOrderList />} />
+
           </Route>
           
           {/* Protect Route Page Admin */}
@@ -114,7 +116,6 @@ function App() {
         <Route path='/email-verification/:token' element={<EmailVerification />} />
         <Route path='/product' element={<ProductPage />} />
         <Route path='/product/detail' element={<ProductDetail />} />
-        <Route path='/:user/transaction' element={<UserOrderList />} />
       </Routes>
       <Footer />
     </div >

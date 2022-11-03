@@ -20,7 +20,7 @@ module.exports = {
                     message: 'Authenticate error'
                 })
             }
-            //console.log('Translate token',decode);
+            // console.log('Translate token',decode);
             req.dataToken = decode
             next();
         })

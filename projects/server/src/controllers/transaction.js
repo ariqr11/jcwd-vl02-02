@@ -47,23 +47,23 @@ module.exports = {
         if (keyword.length > 0 && date.length > 0) {
           console.log(`SELECT * FROM transaction t 
             JOIN status s ON t.status_id = s.idstatus 
-            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[0]} OR
+            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} (${keyword[0]} OR
             ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[1]} OR
-            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]} AND
+            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]}) AND
             t.user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
 
           let getSql = await dbQuery(`SELECT * FROM transaction t 
             JOIN status s ON t.status_id = s.idstatus 
-            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[0]} OR
-            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[1]} OR
-            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]} AND
+            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} (${keyword[0]} OR
+              ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[1]} OR
+              ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]}) AND
             t.user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
 
           let countSql = await dbQuery(`SELECT COUNT(*) AS count FROM transaction t 
             JOIN status s ON t.status_id = s.idstatus 
-            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[0]} OR
-            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[1]} OR
-            ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]} AND
+            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} (${keyword[0]} OR
+              ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[1]} OR
+              ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword[2]}) AND
             t.user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''};`);
 
           // console.log(getSql)
@@ -91,15 +91,15 @@ module.exports = {
         } else {
           console.log(`SELECT * FROM transaction t 
               JOIN status s ON t.status_id = s.idstatus 
-              WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? keyword.join(' OR ') + ' AND' : ''} t.user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
+              WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? `(${keyword.join(' OR ')})` + ' AND' : ''} t.user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
 
           let getSql = await dbQuery(`SELECT * FROM transaction t 
             JOIN status s ON t.status_id = s.idstatus 
-            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? keyword.join(' OR ') + ' AND' : ''} user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
+            WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? `(${keyword.join(' OR ')})` + ' AND' : ''} user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''} ${pagination.length > 0 ? pagination.join(' ') : ''};`);
 
           let countSql = await dbQuery(`SELECT COUNT(*) AS count FROM transaction t 
           JOIN status s ON t.status_id = s.idstatus 
-          WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? keyword.join(' OR ') + ' AND' : ''} user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''};`);
+          WHERE ${filter.length > 0 ? filter.join(' AND ') + ' AND' : ''} ${date.length > 0 ? date.join(' AND ') + ' AND' : ''} ${keyword.length > 0 ? `(${keyword.join(' OR ')})` + ' AND' : ''} user_id =${dbConf.escape(req.dataToken.iduser)} ${sort.length > 0 ? 'ORDER BY' + ' ' + sort[0] : ''};`);
 
           // console.log(getSql)
           if (getSql.length > 0) {

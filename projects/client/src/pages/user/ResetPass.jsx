@@ -35,6 +35,7 @@ const showNew = ()=>{
         setrepeat("password")
     }
 }
+console.log(params)
 
 const onSubmit = async ()=>{
   setLoading(true)

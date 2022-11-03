@@ -23,8 +23,22 @@ module.exports = {
             // console.log(req.body.data)
             const { full_address, district, city, city_id, province, province_id, postal_code } = req.body.data;
 
-            await dbQuery(`INSERT INTO address (full_address, district, city, city_id, province, province_id, postal_code, user_id) VALUES
-          (${dbConf.escape(full_address)}, ${dbConf.escape(district)}, ${dbConf.escape(city)}, ${dbConf.escape(city_id)}, ${dbConf.escape(province)}, ${dbConf.escape(province_id)}, ${dbConf.escape(postal_code)}, ${dbConf.escape(req.dataToken.iduser)});`)
+            let getSql = await dbQuery(`SELECT a.*, s.*, u.fullname, u.phone_number FROM address a 
+            JOIN status s ON a.status_id = s.idstatus 
+            JOIN user u ON u.iduser = a.user_id 
+            WHERE a.user_id = ${req.dataToken.iduser};`);
+
+            if (getSql.length > 0){
+                await dbQuery(`INSERT INTO address (full_address, district, city, city_id, province, province_id, postal_code, user_id) VALUES
+              (${dbConf.escape(full_address)}, ${dbConf.escape(district)}, ${dbConf.escape(city)}, ${dbConf.escape(city_id)}, ${dbConf.escape(province)}, ${dbConf.escape(province_id)}, ${dbConf.escape(postal_code)}, ${dbConf.escape(req.dataToken.iduser)});`)
+            } else {
+                await dbQuery(`INSERT INTO address (full_address, district, city, city_id, province, province_id, postal_code, user_id) VALUES
+              (${dbConf.escape(full_address)}, ${dbConf.escape(district)}, ${dbConf.escape(city)}, ${dbConf.escape(city_id)}, ${dbConf.escape(province)}, ${dbConf.escape(province_id)}, ${dbConf.escape(postal_code)}, ${dbConf.escape(req.dataToken.iduser)});`)
+                
+                let getAddressSql = await dbQuery(`SELECT * FROM address WHERE user_id = ${req.dataToken.iduser};`)
+
+                await dbQuery(`UPDATE address SET status_id = 10, selected = 'true' WHERE idaddress = ${dbConf.escape(getAddressSql[0].idaddress)};`);
+            }
 
             res.status(200).send({
                 success: true,

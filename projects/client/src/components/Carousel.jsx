@@ -5,17 +5,17 @@ const CarouselComponent = () => {
   let dataImage = [
     {
       image: 'https://images.unsplash.com/photo-1576091358783-a212ec293ff3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80',
-      text: "Memenuhi kebutuhan untuk kesehatan anda",
+      text: "Meet your health needs",
       position:'bg-top'
     },
     {
       image: 'https://images.unsplash.com/photo-1577368211130-4bbd0181ddf0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80',
-      text: "Terpercaya dengan terdaftarnya kami di BPOM",
+      text: "Trusted by registering us with BPOM",
       position:'bg-center'
     },
     {
       image: 'https://images.unsplash.com/photo-1584988299603-3ab9216625bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80',
-      text: "Berikan resep anda dan kami akan menyediakannya",
+      text: "Give us your recipe and we will provide it",
       position:'bg-center'
     },
   ]

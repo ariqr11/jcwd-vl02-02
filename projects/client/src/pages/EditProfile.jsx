@@ -47,7 +47,6 @@ const EditProfile = () => {
         phone_number: ''
     })
     const[newProfilPict, setNewProfilPict]=useState('')
-console.log(typeof input.phone_number)
 
 
     useEffect(()=>{
@@ -63,7 +62,7 @@ console.log(typeof input.phone_number)
 
     const updateProfile = ()=>{
         setLoading(true)
-        if(input.fullname.length > 0 && input.username.length > 0 && input.email.length>0 && input.phone_number !== 'undefined'){
+        if(input.fullname.length > 0 && input.username.length > 0 && input.email.length>0 && input.phone_number !== 'undefined' && input.birthdate.length>0){
 
             let medcarelog = localStorage.getItem('medcarelog')
             let formData = new FormData()

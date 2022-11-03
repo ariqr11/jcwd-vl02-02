@@ -88,7 +88,7 @@ const OrderDetail = ({ selected, showModal }) => {
                             <div className="flex items-center justify-center my-2">
                                 {
                                     data.status_id === 7 || data.status_id === 9 ?
-                                        <button type='button'
+                                        <button type='button' onClick={() => onBuyAgain([val])}
                                             className="px-3 py-1 border bg-white-500 text-main-500 font-semibold rounded-lg border-main-500 focus:ring-2 focus:ring-main-500"
                                         >Buy Again</button>
                                         :
@@ -279,6 +279,7 @@ const OrderDetail = ({ selected, showModal }) => {
 
     const onBuyAgain = async (items) => {
         try {
+            console.log(items)
             if (items.length === 1) {
                 console.log('=1', items);
                 let item = items;
@@ -354,77 +355,20 @@ const OrderDetail = ({ selected, showModal }) => {
                 let userToken = localStorage.getItem('medcarelog');
                 console.log('>1', items);
                 console.log('cart', userCartData);
-                let newArrItems = [];
-                let newArrCarts = [];
 
-                let existItem = [];
-                let newItem = [];
+                if (userCartData.length === 0) {
 
-                items.forEach((val, idx) => {
-                    newArrItems.push({ idproduct: val.product_id, qty: val.product_qty })
-                });
+                    let newItem = [];
 
-                userCartData.forEach((val, idx) => {
-                    newArrCarts.push({ idproduct: val.product_id, qty: val.quantity })
-                })
-
-                console.log('newArrItems', newArrItems)
-                console.log('newArrCarts', newArrCarts)
-
-                newArrCarts.forEach((val, idx) => {
-                    newArrItems.forEach((value, index) => {
-                        if (val.idproduct === value.idproduct) {
-                            existItem.push(value);
-                        } else {
-                            if (!newItem.includes(value)) {
-                                newItem.push(value);
-                            }
-                        }
-                    })
-                });
-
-                let ids = new Set(existItem.map(({ idproduct }) => idproduct));
-
-                newItem = newItem.filter(({ idproduct }) => !ids.has(idproduct));
-
-                let newArrExist = [];
-                existItem.map((val, idx) => {
-                    userCartData.map((value, index) => {
-                        if (val.idproduct === value.idproduct) {
-                            newArrExist.push({ ...val, idcart: value.idcart })
-                        }
-                    })
-                });
-
-                console.log('new', newItem)
-                console.log('ext', existItem)
-                console.log('new ext', newArrExist)
-
-                let dataExist = {
-                    multiple: true,
-                    exist: newArrExist
-                };
-
-                let dataNew = {
-                    multiple: true,
-                    new: newItem
-                }
-
-                let success = [];
-
-                if (newArrExist.length > 0) {
-                    let resUpd = await axios.patch(API_URL + '/api/product/updatecart', dataExist, {
-                        headers: {
-                            'Authorization': `Bearer ${userToken}`
-                        }
+                    items.forEach((val, idx) => {
+                        newItem.push({ idproduct: val.product_id, qty: val.product_qty })
                     });
 
-                    if (resUpd.data.success) {
-                        success.push(true);
+                    let dataNew = {
+                        multiple: true,
+                        new: newItem
                     }
-                }
 
-                if (newItem.length > 0) {
                     let res = await axios.post(API_URL + '/api/product/addcart', dataNew, {
                         headers: {
                             'Authorization': `Bearer ${userToken}`
@@ -432,26 +376,123 @@ const OrderDetail = ({ selected, showModal }) => {
                     });
 
                     if (res.data.success) {
-                        success.push(true);
+                        toast.success('Item Added to Cart', {
+                            theme: "colored",
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: false,
+                            progress: undefined,
+                        });
+                        getUserCartData();
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigate('/cart');
+                        }, 1000);
                     }
-                }
 
-                if (success.length > 0) {
-                    toast.success('Item Added to Cart', {
-                        theme: "colored",
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: false,
-                        progress: undefined,
+                } else {
+                    let newArrItems = [];
+                    let newArrCarts = [];
+
+                    let existItem = [];
+                    let newItem = [];
+
+                    items.forEach((val, idx) => {
+                        newArrItems.push({ idproduct: val.product_id, qty: val.product_qty })
                     });
-                    getUserCartData();
-                    setTimeout(() => {
-                        setLoading(false);
-                        navigate('/cart');
-                    }, 1000);
+
+                    userCartData.forEach((val, idx) => {
+                        newArrCarts.push({ idproduct: val.product_id, qty: val.quantity })
+                    })
+
+                    console.log('newArrItems', newArrItems)
+                    console.log('newArrCarts', newArrCarts)
+
+                    newArrCarts.forEach((val, idx) => {
+                        newArrItems.forEach((value, index) => {
+                            if (val.idproduct === value.idproduct) {
+                                existItem.push(value);
+                            } else {
+                                if (!newItem.includes(value)) {
+                                    newItem.push(value);
+                                }
+                            }
+                        })
+                    });
+
+                    let ids = new Set(existItem.map(({ idproduct }) => idproduct));
+
+                    newItem = newItem.filter(({ idproduct }) => !ids.has(idproduct));
+
+                    let newArrExist = [];
+                    existItem.map((val, idx) => {
+                        userCartData.map((value, index) => {
+                            if (val.idproduct === value.idproduct) {
+                                newArrExist.push({ ...val, idcart: value.idcart })
+                            }
+                        })
+                    });
+
+                    console.log('new', newItem)
+                    console.log('ext', existItem)
+                    console.log('new ext', newArrExist)
+
+                    let dataExist = {
+                        multiple: true,
+                        exist: newArrExist
+                    };
+
+                    let dataNew = {
+                        multiple: true,
+                        new: newItem
+                    }
+
+                    let success = [];
+
+                    if (newArrExist.length > 0) {
+                        let resUpd = await axios.patch(API_URL + '/api/product/updatecart', dataExist, {
+                            headers: {
+                                'Authorization': `Bearer ${userToken}`
+                            }
+                        });
+
+                        if (resUpd.data.success) {
+                            success.push(true);
+                        }
+                    }
+
+                    if (newItem.length > 0) {
+                        let res = await axios.post(API_URL + '/api/product/addcart', dataNew, {
+                            headers: {
+                                'Authorization': `Bearer ${userToken}`
+                            }
+                        });
+
+                        if (res.data.success) {
+                            success.push(true);
+                        }
+                    }
+
+                    if (success.length > 0) {
+                        toast.success('Item Added to Cart', {
+                            theme: "colored",
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: false,
+                            progress: undefined,
+                        });
+                        getUserCartData();
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigate('/cart');
+                        }, 1000);
+                    }
                 }
             }
         } catch (error) {

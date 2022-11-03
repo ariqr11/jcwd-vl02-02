@@ -96,49 +96,53 @@ const NewAddressComponent = ({ showModal }) => {
                     setCheckPostal('show');
                 }
             } else {
-                let data = {
-                    full_address: inputFullAddress,
-                    district: inputDistrict,
-                    city: searchCity.type + ' ' + searchCity.city_name,
-                    city_id: selectedCityID,
-                    province: searchData.province,
-                    province_id: selectedProvinceID,
-                    postal_code: inputPostalCode
-                }
-
-                // pakai authorization
-                let add = await axios.post(API_URL + '/api/address/add', { data }, {
-                    headers: {
-                        'Authorization': `Bearer ${userToken}`
+                if (inputPostalCode.match(/[a-zA-Z]/)){
+                    setCheckPostal('show');
+                } else {
+                    let data = {
+                        full_address: inputFullAddress,
+                        district: inputDistrict,
+                        city: searchCity.type + ' ' + searchCity.city_name,
+                        city_id: selectedCityID,
+                        province: searchData.province,
+                        province_id: selectedProvinceID,
+                        postal_code: inputPostalCode
                     }
-                })
-
-                if (add.data.success) {
-                    toast.success('Address Added Success!', {
-                        theme: 'colored',
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    showModal('');
-                    setInputFullAddress('');
-                    setInputDistrict('');
-                    setInputPostalCode('');
-                    setSelectedProvinceID(0);
-                    setSelectedCityID(0);
-                    setCountFullAddress(0);
-                    setCheckAddress('');
-                    setCheckCity('');
-                    setCheckDistrict('');
-                    setCheckPostal('');
-                    setCheckProvince('');
+    
+                    // pakai authorization
+                    let add = await axios.post(API_URL + '/api/address/add', { data }, {
+                        headers: {
+                            'Authorization': `Bearer ${userToken}`
+                        }
+                    })
+    
+                    if (add.data.success) {
+                        toast.success('Address Added Success!', {
+                            theme: 'colored',
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        showModal('');
+                        setInputFullAddress('');
+                        setInputDistrict('');
+                        setInputPostalCode('');
+                        setSelectedProvinceID(0);
+                        setSelectedCityID(0);
+                        setCountFullAddress(0);
+                        setCheckAddress('');
+                        setCheckCity('');
+                        setCheckDistrict('');
+                        setCheckPostal('');
+                        setCheckProvince('');
+                    }
+    
+                    console.log(data)
                 }
-
-                console.log(data)
             }
 
         } catch (error) {

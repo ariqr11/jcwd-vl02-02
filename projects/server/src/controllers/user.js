@@ -326,7 +326,7 @@ module.exports = {
     } catch (error) {
       console.log(error)
       res.status(500).send({
-        message: error
+        message: 'Error query sql'
       })
     }
   },
@@ -360,7 +360,8 @@ module.exports = {
     try {
       let userEmail = await dbQuery(`Select iduser, email,username from user where email = ${dbConf.escape(req.body.email)} `)
       if (userEmail[0].email) {
-        let token = createToken({ ...userEmail[0] })
+        let token = createToken({...userEmail[0] })
+        console.log(token)
         var source = fs.readFileSync(path.join(__dirname, '../template-email/resetPasswordConfirmation.hbs'), 'utf-8')
         var template = Handlebars.compile(source)
         var data = { 'username': userEmail[0].username, 'fe_url': process.env.FE_URL, 'token': token }
@@ -385,7 +386,7 @@ module.exports = {
       console.log(error)
       res.status(500).send({
         success: false,
-        message: 'Wrong Email'
+        message: 'Error Request'
       })
     }
   },

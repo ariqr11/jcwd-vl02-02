@@ -125,7 +125,7 @@ const UserOrderList = (props) => {
                     temp.push('date_order=asc');
                 };
 
-                if (activePage >= 1) {
+                if (search.includes('page')) {
                     temp.push(`limit=5`);
                     temp.push(`offset=${(activePage - 1) * 5}`);
                 };
@@ -330,8 +330,7 @@ const UserOrderList = (props) => {
             }
 
             if (activePage >= 1) {
-                temp.push(`limit=5`);
-                temp.push(`offset=${(activePage - 1) * 5}`)
+                temp.push(`page=${activePage}`);
             }
 
             console.log(temp);
@@ -393,8 +392,7 @@ const UserOrderList = (props) => {
             }
 
             if (activePage >= 1) {
-                temp.push(`limit=5`);
-                temp.push(`offset=${(activePage - 1) * 5}`)
+                temp.push(`page=${activePage}`);
             }
 
 
@@ -671,13 +669,81 @@ const UserOrderList = (props) => {
             if (activePage === val) {
                 return (
                     <li key={idx} className="border border-main-500 px-3 py-1 bg-main-500 text-white hover:cursor-default"
-                        type='button' onClick={() => setActivePage(parseInt(val))}
+                        type='button' onClick={() => {
+                            setActivePage(parseInt(val))
+
+                            let query = selected;
+                            let temp = [];
+                            for (let key in query) {
+                                if (query[key] !== '') {
+                                    temp.push(`${key}=${query[key]}`);
+                                }
+                            };
+
+                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                if (range[0].startDate === range[0].endDate) {
+                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                } else {
+                                    if (range[0].startDate !== '') {
+                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                    }
+
+                                    if (range[0].endDate !== '') {
+                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                    }
+                                }
+                            };
+
+                            if (inputKeyword !== '') {
+                                temp.push(`keyword=${inputKeyword}`);
+                            };
+
+                            temp.push(`page=${val}`);
+
+                            console.log(temp.join('&'));
+                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                        }}
                     >{val}</li>
                 )
             } else {
                 return (
                     <li key={idx} className="border border-main-500 px-3 py-1 text-main-500 hover:cursor-pointer"
-                        type='button' onClick={() => setActivePage(parseInt(val))}
+                        type='button' onClick={() => {
+                            setActivePage(parseInt(val))
+
+                            let query = selected;
+                            let temp = [];
+                            for (let key in query) {
+                                if (query[key] !== '') {
+                                    temp.push(`${key}=${query[key]}`);
+                                }
+                            };
+
+                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                if (range[0].startDate === range[0].endDate) {
+                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                } else {
+                                    if (range[0].startDate !== '') {
+                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                    }
+
+                                    if (range[0].endDate !== '') {
+                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                    }
+                                }
+                            };
+
+                            if (inputKeyword !== '') {
+                                temp.push(`keyword=${inputKeyword}`);
+                            };
+
+                            temp.push(`page=${val}`);
+
+                            console.log(temp.join('&'));
+                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                        }}
                     >{val}</li>
                 )
             }
@@ -797,77 +863,20 @@ const UserOrderList = (props) => {
                 let userToken = localStorage.getItem('medcarelog');
                 console.log('>1', items);
                 console.log('cart', userCartData);
-                let newArrItems = [];
-                let newArrCarts = [];
 
-                let existItem = [];
-                let newItem = [];
+                if (userCartData.length === 0) {
 
-                items.forEach((val, idx) => {
-                    newArrItems.push({ idproduct: val.product_id, qty: val.product_qty })
-                });
+                    let newItem = [];
 
-                userCartData.forEach((val, idx) => {
-                    newArrCarts.push({ idproduct: val.product_id, qty: val.quantity })
-                })
-
-                console.log('newArrItems', newArrItems)
-                console.log('newArrCarts', newArrCarts)
-
-                newArrCarts.forEach((val, idx) => {
-                    newArrItems.forEach((value, index) => {
-                        if (val.idproduct === value.idproduct) {
-                            existItem.push(value);
-                        } else {
-                            if (!newItem.includes(value)) {
-                                newItem.push(value);
-                            }
-                        }
-                    })
-                });
-
-                let ids = new Set(existItem.map(({ idproduct }) => idproduct));
-
-                newItem = newItem.filter(({ idproduct }) => !ids.has(idproduct));
-
-                let newArrExist = [];
-                existItem.map((val, idx) => {
-                    userCartData.map((value, index) => {
-                        if (val.idproduct === value.idproduct) {
-                            newArrExist.push({ ...val, idcart: value.idcart })
-                        }
-                    })
-                });
-
-                console.log('new', newItem)
-                console.log('ext', existItem)
-                console.log('new ext', newArrExist)
-
-                let dataExist = {
-                    multiple: true,
-                    exist: newArrExist
-                };
-
-                let dataNew = {
-                    multiple: true,
-                    new: newItem
-                }
-
-                let success = [];
-
-                if (newArrExist.length > 0) {
-                    let resUpd = await axios.patch(API_URL + '/api/product/updatecart', dataExist, {
-                        headers: {
-                            'Authorization': `Bearer ${userToken}`
-                        }
+                    items.forEach((val, idx) => {
+                        newItem.push({ idproduct: val.product_id, qty: val.product_qty })
                     });
 
-                    if (resUpd.data.success) {
-                        success.push(true);
+                    let dataNew = {
+                        multiple: true,
+                        new: newItem
                     }
-                }
 
-                if (newItem.length > 0) {
                     let res = await axios.post(API_URL + '/api/product/addcart', dataNew, {
                         headers: {
                             'Authorization': `Bearer ${userToken}`
@@ -875,26 +884,123 @@ const UserOrderList = (props) => {
                     });
 
                     if (res.data.success) {
-                        success.push(true);
+                        toast.success('Item Added to Cart', {
+                            theme: "colored",
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: false,
+                            progress: undefined,
+                        });
+                        getUserCartData();
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigate('/cart');
+                        }, 1000);
                     }
-                }
 
-                if (success.length > 0) {
-                    toast.success('Item Added to Cart', {
-                        theme: "colored",
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: false,
-                        progress: undefined,
+                } else {
+                    let newArrItems = [];
+                    let newArrCarts = [];
+
+                    let existItem = [];
+                    let newItem = [];
+
+                    items.forEach((val, idx) => {
+                        newArrItems.push({ idproduct: val.product_id, qty: val.product_qty })
                     });
-                    getUserCartData();
-                    setTimeout(() => {
-                        setLoading(false);
-                        navigate('/cart');
-                    }, 1000);
+
+                    userCartData.forEach((val, idx) => {
+                        newArrCarts.push({ idproduct: val.product_id, qty: val.quantity })
+                    })
+
+                    console.log('newArrItems', newArrItems)
+                    console.log('newArrCarts', newArrCarts)
+
+                    newArrCarts.forEach((val, idx) => {
+                        newArrItems.forEach((value, index) => {
+                            if (val.idproduct === value.idproduct) {
+                                existItem.push(value);
+                            } else {
+                                if (!newItem.includes(value)) {
+                                    newItem.push(value);
+                                }
+                            }
+                        })
+                    });
+
+                    let ids = new Set(existItem.map(({ idproduct }) => idproduct));
+
+                    newItem = newItem.filter(({ idproduct }) => !ids.has(idproduct));
+
+                    let newArrExist = [];
+                    existItem.map((val, idx) => {
+                        userCartData.map((value, index) => {
+                            if (val.idproduct === value.idproduct) {
+                                newArrExist.push({ ...val, idcart: value.idcart })
+                            }
+                        })
+                    });
+
+                    console.log('new', newItem)
+                    console.log('ext', existItem)
+                    console.log('new ext', newArrExist)
+
+                    let dataExist = {
+                        multiple: true,
+                        exist: newArrExist
+                    };
+
+                    let dataNew = {
+                        multiple: true,
+                        new: newItem
+                    }
+
+                    let success = [];
+
+                    if (newArrExist.length > 0) {
+                        let resUpd = await axios.patch(API_URL + '/api/product/updatecart', dataExist, {
+                            headers: {
+                                'Authorization': `Bearer ${userToken}`
+                            }
+                        });
+
+                        if (resUpd.data.success) {
+                            success.push(true);
+                        }
+                    }
+
+                    if (newItem.length > 0) {
+                        let res = await axios.post(API_URL + '/api/product/addcart', dataNew, {
+                            headers: {
+                                'Authorization': `Bearer ${userToken}`
+                            }
+                        });
+
+                        if (res.data.success) {
+                            success.push(true);
+                        }
+                    }
+
+                    if (success.length > 0) {
+                        toast.success('Item Added to Cart', {
+                            theme: "colored",
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: false,
+                            progress: undefined,
+                        });
+                        getUserCartData();
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigate('/cart');
+                        }, 1000);
+                    }
                 }
             }
         } catch (error) {
@@ -935,7 +1041,7 @@ const UserOrderList = (props) => {
                                 setTab('all');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: '', sort: 'new' }
                                 console.log('selected', selected);
@@ -946,6 +1052,11 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'));
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -956,7 +1067,7 @@ const UserOrderList = (props) => {
                                 setTab('waiting');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: 'waiting', sort: 'new' };
                                 console.log('selected', selected);
@@ -967,6 +1078,10 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'));
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -977,7 +1092,7 @@ const UserOrderList = (props) => {
                                 setTab('process');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: 'process', sort: 'new' };
                                 console.log('selected', selected);
@@ -988,6 +1103,10 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'))
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -998,7 +1117,7 @@ const UserOrderList = (props) => {
                                 setTab('delivery');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: 'delivery', sort: 'new' };
                                 console.log('selected', selected);
@@ -1009,6 +1128,10 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'));
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -1019,7 +1142,7 @@ const UserOrderList = (props) => {
                                 setTab('finished');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: 'finished', sort: 'new' };
                                 console.log('selected', selected);
@@ -1030,6 +1153,10 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'));
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -1040,7 +1167,7 @@ const UserOrderList = (props) => {
                                 setTab('cancel');
                                 setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                 setActivePage(1);
-                                setInputKeyword('');
+                                setInputKeyword(inputKeyword);
 
                                 let query = { ...selected, tab: 'cancel' };
                                 console.log('selected', selected);
@@ -1051,6 +1178,10 @@ const UserOrderList = (props) => {
                                         temp.push(`${key}=${query[key]}`);
                                     }
                                 };
+                                if (inputKeyword !== '') {
+                                    temp.push(`keyword=${inputKeyword}`)
+                                }
+                                temp.push(`page=1`);
                                 console.log(temp.join('&'));
                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                             }}
@@ -1066,7 +1197,7 @@ const UserOrderList = (props) => {
                                         setType('all');
                                         setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                         setActivePage(1);
-                                        setInputKeyword('');
+                                        setInputKeyword(inputKeyword);
 
                                         let query = { ...selected, type: '' };
                                         console.log('selected', selected);
@@ -1077,6 +1208,10 @@ const UserOrderList = (props) => {
                                                 temp.push(`${key}=${query[key]}`);
                                             }
                                         };
+                                        if (inputKeyword !== '') {
+                                            temp.push(`keyword=${inputKeyword}`)
+                                        }
+                                        temp.push(`page=1`);
                                         console.log(temp.join('&'));
                                         navigate(`/${username}/transaction?${temp.join('&')}`);
                                     }}
@@ -1087,7 +1222,7 @@ const UserOrderList = (props) => {
                                         setType('prescription');
                                         setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                         setActivePage(1);
-                                        setInputKeyword('');
+                                        setInputKeyword(inputKeyword);
 
                                         let query = { ...selected, type: 'prescription' };
                                         console.log('selected', selected);
@@ -1098,6 +1233,10 @@ const UserOrderList = (props) => {
                                                 temp.push(`${key}=${query[key]}`);
                                             }
                                         };
+                                        if (inputKeyword !== '') {
+                                            temp.push(`keyword=${inputKeyword}`)
+                                        }
+                                        temp.push(`page=1`);
                                         console.log(temp.join('&'));
                                         navigate(`/${username}/transaction?${temp.join('&')}`);
                                     }}
@@ -1108,7 +1247,7 @@ const UserOrderList = (props) => {
                                         setType('free');
                                         setRange([{ startDate: '', endDate: '', key: 'selection', color: 'teal' }]);
                                         setActivePage(1);
-                                        setInputKeyword('');
+                                        setInputKeyword(inputKeyword);
 
                                         let query = { ...selected, type: 'free' };
                                         console.log('selected', selected);
@@ -1119,6 +1258,10 @@ const UserOrderList = (props) => {
                                                 temp.push(`${key}=${query[key]}`);
                                             }
                                         };
+                                        if (inputKeyword !== '') {
+                                            temp.push(`keyword=${inputKeyword}`)
+                                        }
+                                        temp.push(`page=1`);
                                         console.log(temp.join('&'));
                                         navigate(`/${username}/transaction?${temp.join('&')}`);
                                     }}
@@ -1133,6 +1276,7 @@ const UserOrderList = (props) => {
                                         setSelected({ ...selected, sort: e.target.value });
                                         setSort(e.target.value);
                                         setActivePage(1);
+                                        setInputKeyword(inputKeyword)
 
                                         let query = { ...selected, sort: e.target.value };
                                         console.log('selected', selected);
@@ -1159,7 +1303,7 @@ const UserOrderList = (props) => {
                                                 }
                                             }
                                         };
-
+                                        temp.push(`page=1`);
                                         console.log(temp.join('&'))
                                         navigate(`/${username}/transaction?${temp.join('&')}`);
                                         getUserTransactionData(`?${temp.join('&')}`);
@@ -1212,7 +1356,7 @@ const UserOrderList = (props) => {
 
                                                 setSelected({ ...selected });
                                                 setActivePage(1);
-                                                setInputKeyword('');
+                                                setInputKeyword(inputKeyword);
 
                                                 let query = { ...selected, sort: 'new' }
                                                 console.log('selected', selected)
@@ -1222,7 +1366,11 @@ const UserOrderList = (props) => {
                                                     if (query[key] !== '') {
                                                         temp.push(`${key}=${query[key]}`)
                                                     }
+                                                };
+                                                if (inputKeyword !== '') {
+                                                    temp.push(`keyword=${inputKeyword}`);
                                                 }
+                                                temp.push(`page=1`);
                                                 console.log('clear', temp.join('&'))
                                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                                             }}
@@ -1301,7 +1449,8 @@ const UserOrderList = (props) => {
                                                     if (query[key] !== '') {
                                                         temp.push(`${key}=${query[key]}`)
                                                     }
-                                                }
+                                                };
+                                                temp.push(`page=1`);
                                                 console.log('clear', temp.join('&'))
                                                 navigate(`/${username}/transaction?${temp.join('&')}`);
                                             }}
@@ -1326,7 +1475,41 @@ const UserOrderList = (props) => {
                                                     <li className="hidden sm:block border border-gray-300 rounded-l-full px-3 py-1 font-semibold text-gray-300 hover:cursor-default">Previous</li>
                                                     :
                                                     <li className="hidden sm:block border border-main-500 rounded-l-full px-3 py-1 font-semibold text-main-500 hover:cursor-pointer"
-                                                        type='button' onClick={() => setActivePage(activePage - 1)}
+                                                        type='button' onClick={() => {
+                                                            setActivePage(activePage - 1);
+
+                                                            let query = selected;
+                                                            let temp = [];
+                                                            for (let key in query) {
+                                                                if (query[key] !== '') {
+                                                                    temp.push(`${key}=${query[key]}`);
+                                                                }
+                                                            };
+
+                                                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                                                if (range[0].startDate === range[0].endDate) {
+                                                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                                                } else {
+                                                                    if (range[0].startDate !== '') {
+                                                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                                                    }
+
+                                                                    if (range[0].endDate !== '') {
+                                                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                                                    }
+                                                                }
+                                                            };
+
+                                                            if (inputKeyword !== '') {
+                                                                temp.push(`keyword=${inputKeyword}`);
+                                                            };
+
+                                                            temp.push(`page=${activePage - 1}`);
+
+                                                            console.log(temp.join('&'));
+                                                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                                                        }}
                                                     >Previous</li>
                                             }
                                             {
@@ -1334,7 +1517,40 @@ const UserOrderList = (props) => {
                                                     <li className="sm:hidden border border-gray-300 rounded-l-full px-3 py-1 font-semibold text-gray-300 hover:cursor-default">{'<'}</li>
                                                     :
                                                     <li className="sm:hidden border border-main-500 rounded-l-full px-3 py-1 font-semibold text-main-500 hover:cursor-pointer"
-                                                        type='button' onClick={() => setActivePage(activePage - 1)}
+                                                        type='button' onClick={() => {
+                                                            setActivePage(activePage - 1)
+                                                            let query = selected;
+                                                            let temp = [];
+                                                            for (let key in query) {
+                                                                if (query[key] !== '') {
+                                                                    temp.push(`${key}=${query[key]}`);
+                                                                }
+                                                            };
+
+                                                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                                                if (range[0].startDate === range[0].endDate) {
+                                                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                                                } else {
+                                                                    if (range[0].startDate !== '') {
+                                                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                                                    }
+
+                                                                    if (range[0].endDate !== '') {
+                                                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                                                    }
+                                                                }
+                                                            };
+
+                                                            if (inputKeyword !== '') {
+                                                                temp.push(`keyword=${inputKeyword}`);
+                                                            };
+
+                                                            temp.push(`page=${activePage - 1}`);
+
+                                                            console.log(temp.join('&'));
+                                                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                                                        }}
                                                     >{'<'}</li>
                                             }
                                             {printPagination()}
@@ -1343,7 +1559,40 @@ const UserOrderList = (props) => {
                                                     <li className="sm:hidden border border-gray-300 rounded-r-full px-3 py-1 font-semibold text-gray-300 hover:cursor-default">{'>'}</li>
                                                     :
                                                     <li className="sm:hidden border border-main-500 rounded-r-full px-3 py-1 font-semibold text-main-500 hover:cursor-pointer"
-                                                        type='button' onClick={() => setActivePage(activePage + 1)}
+                                                        type='button' onClick={() => {
+                                                            setActivePage(activePage + 1)
+                                                            let query = selected;
+                                                            let temp = [];
+                                                            for (let key in query) {
+                                                                if (query[key] !== '') {
+                                                                    temp.push(`${key}=${query[key]}`);
+                                                                }
+                                                            };
+
+                                                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                                                if (range[0].startDate === range[0].endDate) {
+                                                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                                                } else {
+                                                                    if (range[0].startDate !== '') {
+                                                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                                                    }
+
+                                                                    if (range[0].endDate !== '') {
+                                                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                                                    }
+                                                                }
+                                                            };
+
+                                                            if (inputKeyword !== '') {
+                                                                temp.push(`keyword=${inputKeyword}`);
+                                                            };
+
+                                                            temp.push(`page=${activePage + 1}`);
+
+                                                            console.log(temp.join('&'));
+                                                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                                                        }}
                                                     >{'>'}</li>
                                             }
                                             {
@@ -1351,7 +1600,40 @@ const UserOrderList = (props) => {
                                                     <li className="hidden sm:block border border-gray-300 rounded-r-full px-5 py-1 font-semibold text-gray-300 hover:cursor-default">Next</li>
                                                     :
                                                     <li className="hidden sm:block border border-main-500 rounded-r-full px-5 py-1 font-semibold text-main-500 hover:cursor-pointer"
-                                                        type='button' onClick={() => setActivePage(activePage + 1)}
+                                                        type='button' onClick={() => {
+                                                            setActivePage(activePage + 1)
+                                                            let query = selected;
+                                                            let temp = [];
+                                                            for (let key in query) {
+                                                                if (query[key] !== '') {
+                                                                    temp.push(`${key}=${query[key]}`);
+                                                                }
+                                                            };
+
+                                                            if (range[0].startDate !== '' || range[0].endDate !== '') {
+                                                                if (range[0].startDate === range[0].endDate) {
+                                                                    temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`);
+                                                                    temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`);
+                                                                } else {
+                                                                    if (range[0].startDate !== '') {
+                                                                        temp.push(`start=${range[0].startDate.toLocaleString("sv-SE")}`)
+                                                                    }
+
+                                                                    if (range[0].endDate !== '') {
+                                                                        temp.push(`end=${range[0].endDate.toLocaleDateString("sv-SE") + ' ' + '23:59:59'}`)
+                                                                    }
+                                                                }
+                                                            };
+
+                                                            if (inputKeyword !== '') {
+                                                                temp.push(`keyword=${inputKeyword}`);
+                                                            };
+
+                                                            temp.push(`page=${activePage + 1}`);
+
+                                                            console.log(temp.join('&'));
+                                                            navigate(`/${username}/transaction?${temp.join('&')}`);
+                                                        }}
                                                     >Next</li>
                                             }
                                         </ul>
