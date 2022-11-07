@@ -114,6 +114,14 @@ const TransactionPages = () => {
           ])
           setFilter(`${firstStart[0]}&${firstEnd[0]}`)
         } else {
+          setRange([
+            {
+              startDate: new Date(`${firstStart[0].split('=')[1]}`),
+              endDate: new Date(`${firstEnd[0].split('=')[1]}`),
+              key: 'selection',
+              color: 'teal'
+            }
+          ])
           setInvoice(firstInvoice[0].split('=')[1])
           setFilter(`${firstInvoice[0]}&${firstStart[0]}&${firstEnd[0]}`)
         }
@@ -161,9 +169,9 @@ const TransactionPages = () => {
             </div>
             <div className='my-3 mx-5'>
               <p className='font-bold sm:text-lg'>{val.prescription_pic ? 'Resep Dokter' : val.detail[0].product_name}</p>
-              <button type='button' className={`${val.prescription_pic ? 'text-md transition mt-3 p-1 bg-main-500 hover:bg-main-700 focus:ring-main-500 text-white rounded  hover:-translate-y-1 w-44' : 'hidden'}`} onClick={val.status_id == 3 ? () => setModalRecipe(val) : () => setModalDetail(val)}>{val.status_id == 3 ? `Make Recipe's Copy` : 'See Detail Order'}</button>
+              <button type='button' className={`${val.prescription_pic ? 'text-md transition mt-3 p-1 bg-main-500 hover:bg-main-700 focus:ring-main-500 text-white rounded  hover:-translate-y-1 w-44' : 'hidden'}`} onClick={val.status_id == 3 ? () => setModalRecipe(val) : () => setModalDetail(val)} disabled={val.status_id == 7 && val.detail.length == 0 ? true : false}>{val.status_id == 3 ? `Make Recipe's Copy` : val.note != 'Medicine Out of Stock' ? 'See Detail Order' : 'NO DETAIL ORDER'}</button>
               <div className={`${val.prescription_pic ? 'hidden' : ''}`}>
-                {val.status_id == 3 ? null
+                {val.status_id == 3 || (val.status_id == 7 && val.prescription_pic) ? null
                   :
                   <div>
                     <p className='font-thin sm:text-lg flex'>{val.detail[0].product_qty} {val.detail[0].product_unit}  x <p className='ml-2'><Currency price={val.detail[0].product_price} /></p></p>
@@ -200,12 +208,13 @@ const TransactionPages = () => {
         <div className='sm:flex ml-5 m-2 sm:m-5 justify-between'>
           <div className='sm:flex'>
             <p className='sm:mt-5 mt-2 sm:text-lg text-teal-500 font-semibold flex items-center'><BsFillChatDotsFill className='mr-2 sm:block hidden' /> Chat Customer</p>
-            <button className={`${val.status_id == 3 ? 'hidden' : ''} sm:mt-5 mt-2 sm:text-lg text-teal-500  font-semibold flex sm:ml-10 items-center`} data-modal-toggle="detailModal" onClick={() => {
+            <button className={`${val.status_id == 3 || val.note == 'Medicine Out of Stock' ? 'hidden' : ''} sm:mt-5 mt-2 sm:text-lg text-teal-500  font-semibold flex sm:ml-10 items-center`} data-modal-toggle="detailModal" onClick={() => {
               setLoading(true)
               setTimeout(() => setLoading(false), 1000)
               setTimeout(() => setModalDetail(val), 1000)
-            }}><BiDetail className='mr-2 sm:block hidden' />Order Detail</button>
-            <button className={`${val.status_id == 3 ? 'hidden' : ''} sm:mt-5 mt-2 sm:text-lg text-teal-500  font-semibold flex sm:ml-10 items-center`} data-modal-toggle="paymentModal" onClick={() => {
+            }}
+            ><BiDetail className='mr-2 sm:block hidden' />Order Detail</button>
+            <button className={`${val.status_id == 3 || val.note == 'Medicine Out of Stock' ? 'hidden' : ''} sm:mt-5 mt-2 sm:text-lg text-teal-500  font-semibold flex sm:ml-10 items-center`} data-modal-toggle="paymentModal" onClick={() => {
               setLoading(true)
               setTimeout(() => setLoading(false), 1000)
               setTimeout(() => setModalPayment(val), 1000)
@@ -318,6 +327,7 @@ const TransactionPages = () => {
           setRecipe('')
           getTrans(search)
           setTimeout(() => setModalNote('gopayment'), 1000)
+          getProduct()
         }
       }).catch((err) => {
         console.log(err)
@@ -749,7 +759,7 @@ const TransactionPages = () => {
                     In Delivery
                   </button>
                   <button
-                    className={`${status == 'status=completed' ? "bg-main-500 text-white" : "bg-white text-gray-400"} border-teal-500 rounded-lg  hover:bg-main-500 hover:text-white font-medium w-36 h-10 text-center items-center mx-3`} onClick={() => {
+                    className={`${status == 'status=finished' ? "bg-main-500 text-white" : "bg-white text-gray-400"} border-teal-500 rounded-lg  hover:bg-main-500 hover:text-white font-medium w-36 h-10 text-center items-center mx-3`} onClick={() => {
                       handleStatus('finished')
                       setDefaultStatus('Order Completed')
                     }} type="button">
@@ -1138,7 +1148,7 @@ const TransactionPages = () => {
                 <div className='flex justify-between'>
                   <p />
                   <div>
-                    <button className={`${modalAccept.status_id == 3 ? '' : 'hidden'}transition mr-4 bg-white border border-main-500 focus:ring-main-500 text-main-500 rounded-lg py-1 px-2 mt-1 hover:-translate-y-1 hover:bg-gray-100 w-20`} onClick={() => {
+                    <button className={`${modalAccept.status_id == 3 ? 'transition mr-4 bg-white border border-main-500 focus:ring-main-500 text-main-500 rounded-lg py-1 px-2 mt-1 hover:-translate-y-1 hover:bg-gray-100 w-20' : 'hidden'}`} onClick={() => {
                       setModalRecipe(modalAccept)
                       setModalAccept('')
                     }}>Back</button>
